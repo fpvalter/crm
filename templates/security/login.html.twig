@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<title>:: CRM :: Login</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+<meta name="description" content="i4bs" />
+<meta name="author" content="github.com/fpvalter" />
+
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- VENDOR CSS -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}">
+
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/color_skins.css') }}">
+</head>
+
+<body class="theme-orange">
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<div class="vertical-align-wrap">
+			<div class="vertical-align-middle auth-main">
+				<div class="auth-box">
+                    <div class="top">
+                        <img src="../assets/images/logo-white.svg" alt="Lucid">
+                    </div>
+					<div class="card">
+                        <div class="header">
+                            <p class="lead">Acesso ao CRM</p>
+                        </div>
+                        <div class="body">
+                            <form class="form-auth-small" action="index.html">
+                                <div class="form-group">
+                                    <label for="email" class="control-label sr-only">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="control-label sr-only">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Senha">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
+                            </form>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END WRAPPER -->
+</body>
+</html>
