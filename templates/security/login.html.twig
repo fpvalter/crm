@@ -42,6 +42,8 @@
                                     <label for="password" class="control-label sr-only">Password</label>
                                     <input type="password" class="form-control" id="password" placeholder="Senha">
                                 </div>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
                             </form>
                         </div>
