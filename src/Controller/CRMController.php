@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CRMController extends AbstractController
 {
     /**
-     * @Route("/", name="crm")
+     * @Route("/", name="crm_index")
      */
     public function index(): Response
     {
