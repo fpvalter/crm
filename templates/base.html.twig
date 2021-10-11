@@ -17,9 +17,8 @@
             <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}">
 
-            <link rel="stylesheet" href="{{ asset('assets/vendor/chartist/css/chartist.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert/sweetalert.css') }}"/>
 
             <!-- MAIN CSS -->
             <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
@@ -207,10 +206,10 @@
                         <div class="tab-pane animated fadeIn active" id="menu_principal">
                             <nav class="sidebar-nav">
                                 <ul class="main-menu metismenu">
-                                    <li class="active"><a href="index.html"><i class="icon-home"></i><span>Home</span></a></li>
+                                    <li class="active"><a href="{{ path('crm_index') }}"><i class="icon-home"></i><span>Home</span></a></li>
                     
                                     <li>
-                                        <a href="#Cadastros" class="has-arrow"><i class="icon-users"></i><span>Cadastros</span></a>
+                                        <a href="#Cadastros" class="has-arrow"><i class="fa fa-database"></i><span>Cadastros</span></a>
                                         <ul>
                                             <li><a href="{{ path('cliente') }}">Clientes</a></li>
                                         </ul>
@@ -256,7 +255,17 @@
                 </div>
             </div>
 
-            {% block body %}{% endblock %}
+            <div id="main-content">
+                <div class="container-fluid">
+                    
+                    <div class="block-header">
+                        {% block body_header %} {% endblock %}
+                    </div>
+
+                    {% block body %}{% endblock %}
+
+                </div>
+            </div>
 
         </div>
 
@@ -266,8 +275,7 @@
             <script src="{{ asset('assets/bundles/vendorscripts.bundle.js') }}"></script>
 
             <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
-            <script src="{{ asset('assets/bundles/chartist.bundle.js') }}"></script>
-            <script src="{{ asset('assets/bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
+            <script src="{{ asset('assets/vendor/sweetalert/sweetalert.min.js') }}"></script>
 
             <script src="{{ asset('assets/bundles/mainscripts.bundle.js') }}"></script>
             

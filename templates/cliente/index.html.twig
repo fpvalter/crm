@@ -1,20 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ClienteController!{% endblock %}
+{% block title %}Clientes{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Clientes</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item active">Clientes</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    <div class="table-responsive">
+                        <table id="table_clientes" class="table table-hover dataTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CNPJ</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CNPJ</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Winner Pneus</td>
+                                    <td>51.511.511/0001-51</td>
+                                    <td>Limeira</td>
+                                    <td>SP</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Loser Pneus</td>
+                                    <td>51.511.511/0001-51</td>
+                                    <td>Limeira</td>
+                                    <td>SP</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% block javascripts %}
+    {{ parent() }}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/dev/crm/src/Controller/ClienteController.php'|file_link(0) }}">src/Controller/ClienteController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/dev/crm/templates/cliente/index.html.twig'|file_link(0) }}">templates/cliente/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            let dataTable = $('#table_clientes').DataTable( );
+
+        });
+
+    </script>
 {% endblock %}
