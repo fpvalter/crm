@@ -41,7 +41,7 @@
 
         <div id="wrapper">
         
-            <nav class="navbar navbar-fixed-top">
+            <nav class="navbar navbar-fixed-top" style="background: #191f28 !important">
                 <div class="container-fluid">
                     <div class="navbar-btn">
                         <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
@@ -154,7 +154,7 @@
             <div id="left-sidebar" class="sidebar">
                 <div class="sidebar-scroll">
                     <div class="user-account">
-                        <img src="../assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+                        <img src="{{ asset('images/avatar.jpg') }}" class="rounded-circle user-photo" alt="User Profile Picture">
                         <div class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>{{ app.user.userIdentifier }}</strong></a>                    
                             <ul class="dropdown-menu dropdown-menu-right account animated flipInY">

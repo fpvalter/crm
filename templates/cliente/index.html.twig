@@ -7,6 +7,8 @@
     {{ parent() }}
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css') }}">
 
 {% endblock %}
 
@@ -34,6 +36,7 @@
                         <table id="table_clientes" class="table table-hover dataTable">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th>Código</th>
                                     <th>Nome</th>
                                     <th>CNPJ</th>
                                     <th>Cidade</th>
@@ -43,6 +46,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th>Código</th>
                                     <th>Nome</th>
                                     <th>CNPJ</th>
                                     <th>Cidade</th>
@@ -50,22 +54,6 @@
                                     <th></th>
                                 </tr>
                             </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td>Winner Pneus</td>
-                                    <td>51.511.511/0001-51</td>
-                                    <td>Limeira</td>
-                                    <td>SP</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Loser Pneus</td>
-                                    <td>51.511.511/0001-51</td>
-                                    <td>Limeira</td>
-                                    <td>SP</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -82,7 +70,36 @@
     
         $(document).ready(function(){
 
-            let dataTable = $('#table_clientes').DataTable( );
+            let dataTable = $('#table_clientes').DataTable( {
+                "responsive": true,
+                "language": {
+                    url: '{{ asset('assets/bundles/datatablesportuguese.json') }}'
+                },
+                "deferRender": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": '{{ path('cliente_list') }}',
+                    "type": 'POST',
+                    "data": (data) => {
+                        //data.some_filter = $("#some_filter").val()
+                    }
+                },
+                "columns": [
+                    { "data": "codigo_cliente" },
+                    { "data": "razao_social" },
+                    { "data": "cnpj" },
+                    { "data": "cidade" },
+                    { "data": "uf" },
+                    {
+                        "data":           'action_column',
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": ''
+                    },
+                ],
+                "order": [[1, 'asc']]
+            } );
 
         });
 
