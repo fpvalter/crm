@@ -4,3 +4,7 @@
 
 api_login_check:
     path: /api/login_check
+
+swagger_ui:
+    path: /api_docs
+    controller: api_platform.swagger.action.ui

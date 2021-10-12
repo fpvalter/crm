@@ -55,6 +55,7 @@ security:
     access_control:
 
         - { path: ^/login, role: PUBLIC_ACCESS }
+        - { path: ^/api_docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/admin/', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
