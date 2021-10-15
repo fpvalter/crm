@@ -38,6 +38,21 @@ class ClienteInfo
      */
     private $dias_ultima_compra;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $r;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $f;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $v;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +102,42 @@ class ClienteInfo
     public function setDiasUltimaCompra(?int $dias_ultima_compra): self
     {
         $this->dias_ultima_compra = $dias_ultima_compra;
+
+        return $this;
+    }
+
+    public function getR(): ?int
+    {
+        return $this->r;
+    }
+
+    public function setR(?int $r): self
+    {
+        $this->r = $r;
+
+        return $this;
+    }
+
+    public function getF(): ?int
+    {
+        return $this->f;
+    }
+
+    public function setF(?int $f): self
+    {
+        $this->f = $f;
+
+        return $this;
+    }
+
+    public function getV(): ?int
+    {
+        return $this->v;
+    }
+
+    public function setV(?int $v): self
+    {
+        $this->v = $v;
 
         return $this;
     }

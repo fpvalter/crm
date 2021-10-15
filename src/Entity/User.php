@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,6 +44,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $enabled;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nome;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $telefone;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Estabelecimento::class, inversedBy="users")
+     */
+    private $estabelecimento;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Equipe::class, mappedBy="users")
+     */
+    private $equipes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $codigo;
+
+    public function __construct()
+    {
+        $this->equipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -156,6 +188,81 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEnabled(?bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getNome(): ?string
+    {
+        return $this->nome;
+    }
+
+    public function setNome(?string $nome): self
+    {
+        $this->nome = $nome;
+
+        return $this;
+    }
+
+    public function getTelefone(): ?string
+    {
+        return $this->telefone;
+    }
+
+    public function setTelefone(?string $telefone): self
+    {
+        $this->telefone = $telefone;
+
+        return $this;
+    }
+
+    public function getEstabelecimento(): ?Estabelecimento
+    {
+        return $this->estabelecimento;
+    }
+
+    public function setEstabelecimento(?Estabelecimento $estabelecimento): self
+    {
+        $this->estabelecimento = $estabelecimento;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Equipe[]
+     */
+    public function getEquipes(): Collection
+    {
+        return $this->equipes;
+    }
+
+    public function addEquipe(Equipe $equipe): self
+    {
+        if (!$this->equipes->contains($equipe)) {
+            $this->equipes[] = $equipe;
+            $equipe->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipe(Equipe $equipe): self
+    {
+        if ($this->equipes->removeElement($equipe)) {
+            $equipe->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getCodigo(): ?string
+    {
+        return $this->codigo;
+    }
+
+    public function setCodigo(?string $codigo): self
+    {
+        $this->codigo = $codigo;
 
         return $this;
     }
