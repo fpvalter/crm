@@ -2,13 +2,26 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProdutoEstabelecimentoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=ProdutoEstabelecimentoRepository::class)
+ * @ApiResource(
+ *      collectionOperations={"get", "post"},
+ *      itemOperations={"get", "put", "patch"}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class, 
+ *      properties={
+ *          "estabelecimento.codigo": "exact",
+ *          "estabelecimento.cnpj": "exact",
+ *          "produto.codigo": "exact"
+ *      }
+ * )
  */
 class ProdutoEstabelecimento
 {
@@ -34,12 +47,12 @@ class ProdutoEstabelecimento
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $dias_ultima_venda;
+    private $diasUltimaVenda;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $diferenca_entrada_saida;
+    private $diferencaEntradaSaida;
 
     public function getId(): ?int
     {
@@ -72,24 +85,24 @@ class ProdutoEstabelecimento
 
     public function getDiasUltimaVenda(): ?int
     {
-        return $this->dias_ultima_venda;
+        return $this->diasUltimaVenda;
     }
 
-    public function setDiasUltimaVenda(?int $dias_ultima_venda): self
+    public function setDiasUltimaVenda(?int $diasUltimaVenda): self
     {
-        $this->dias_ultima_venda = $dias_ultima_venda;
+        $this->diasUltimaVenda = $diasUltimaVenda;
 
         return $this;
     }
 
     public function getDiferencaEntradaSaida(): ?float
     {
-        return $this->diferenca_entrada_saida;
+        return $this->diferencaEntradaSaida;
     }
 
-    public function setDiferencaEntradaSaida(?float $diferenca_entrada_saida): self
+    public function setDiferencaEntradaSaida(?float $diferencaEntradaSaida): self
     {
-        $this->diferenca_entrada_saida = $diferenca_entrada_saida;
+        $this->diferencaEntradaSaida = $diferencaEntradaSaida;
 
         return $this;
     }

@@ -4,9 +4,26 @@ namespace App\Entity;
 
 use App\Repository\ContatoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=ContatoRepository::class)
+ * 
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "patch"}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class, 
+ *      properties={
+ *          "codigo" : "exact",
+ *          "cliente.cnpj" : "exact",
+ *          "cliente.codigo" : "exact"
+ *      }
+ * )
  */
 class Contato
 {
@@ -18,35 +35,47 @@ class Contato
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Cliente::class, inversedBy="contatos")
+     * @ORM\ManyToOne(targetEntity=Cliente::class, inversedBy="contatos", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"clientePost"})
      */
     private $cliente;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"clientePost"})
      */
     private $nome;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"clientePost"})
      */
-    private $data_nascimento;
+    private $dataNascimento;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $telefone;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $observacao;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost"})
+     */
+    private $codigo;
 
     public function getId(): ?int
     {
@@ -79,12 +108,12 @@ class Contato
 
     public function getDataNascimento(): ?\DateTimeInterface
     {
-        return $this->data_nascimento;
+        return $this->dataNascimento;
     }
 
-    public function setDataNascimento(?\DateTimeInterface $data_nascimento): self
+    public function setDataNascimento(?\DateTimeInterface $dataNascimento): self
     {
-        $this->data_nascimento = $data_nascimento;
+        $this->dataNascimento = $dataNascimento;
 
         return $this;
     }
@@ -121,6 +150,18 @@ class Contato
     public function setObservacao(?string $observacao): self
     {
         $this->observacao = $observacao;
+
+        return $this;
+    }
+
+    public function getCodigo(): ?string
+    {
+        return $this->codigo;
+    }
+
+    public function setCodigo(?string $codigo): self
+    {
+        $this->codigo = $codigo;
 
         return $this;
     }

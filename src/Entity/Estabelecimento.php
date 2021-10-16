@@ -6,9 +6,24 @@ use App\Repository\EstabelecimentoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=EstabelecimentoRepository::class)
+ * 
+ * @ApiResource(
+ *      collectionOperations={"get"},
+ *      itemOperations={"get"}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class, 
+ *      properties={
+ *          "codigo": "exact",
+ *          "cnpj": "exact"
+ *      }
+ * )
  */
 class Estabelecimento
 {
@@ -20,7 +35,7 @@ class Estabelecimento
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $codigo;
 
@@ -32,7 +47,7 @@ class Estabelecimento
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $razao_social;
+    private $razaoSocial;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -105,12 +120,12 @@ class Estabelecimento
 
     public function getRazaoSocial(): ?string
     {
-        return $this->razao_social;
+        return $this->razaoSocial;
     }
 
-    public function setRazaoSocial(string $razao_social): self
+    public function setRazaoSocial(string $razaoSocial): self
     {
-        $this->razao_social = $razao_social;
+        $this->razaoSocial = $razaoSocial;
 
         return $this;
     }

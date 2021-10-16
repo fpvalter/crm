@@ -4,9 +4,24 @@ namespace App\Entity;
 
 use App\Repository\ClienteInfoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=ClienteInfoRepository::class)
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "patch"}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class, 
+ *      properties={
+ *          "cliente.codigo": "exact",
+ *          "cliente.cnpj": "exact"
+ *      }
+ * )
  */
 class ClienteInfo
 {
@@ -19,37 +34,44 @@ class ClienteInfo
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $credito;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"clientePost"})
      */
-    private $credito_validade;
+    private $creditoValidade;
 
     /**
      * @ORM\OneToOne(targetEntity=Cliente::class, inversedBy="clienteInfo", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"clientePost"})
      */
     private $cliente;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"clientePost"})
      */
-    private $dias_ultima_compra;
+    private $diasUltimaCompra;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $r;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $f;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $v;
 
@@ -72,12 +94,12 @@ class ClienteInfo
 
     public function getCreditoValidade(): ?\DateTimeInterface
     {
-        return $this->credito_validade;
+        return $this->creditoValidade;
     }
 
-    public function setCreditoValidade(?\DateTimeInterface $credito_validade): self
+    public function setCreditoValidade(?\DateTimeInterface $creditoValidade): self
     {
-        $this->credito_validade = $credito_validade;
+        $this->creditoValidade = $creditoValidade;
 
         return $this;
     }
@@ -96,12 +118,12 @@ class ClienteInfo
 
     public function getDiasUltimaCompra(): ?int
     {
-        return $this->dias_ultima_compra;
+        return $this->diasUltimaCompra;
     }
 
-    public function setDiasUltimaCompra(?int $dias_ultima_compra): self
+    public function setDiasUltimaCompra(?int $diasUltimaCompra): self
     {
-        $this->dias_ultima_compra = $dias_ultima_compra;
+        $this->diasUltimaCompra = $diasUltimaCompra;
 
         return $this;
     }

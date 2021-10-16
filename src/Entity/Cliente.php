@@ -2,17 +2,29 @@
 
 namespace App\Entity;
 
+use App\Repository\ClienteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=ClienteRepository::class)
  * 
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put"}
+ *     itemOperations={"get", "put", "patch"},
+ *     denormalizationContext={"groups"={"clientePost"}}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class, 
+ *      properties={
+ *          "cnpj": "exact",
+ *          "codigo": "exact"
+ *      }
  * )
  */
 class Cliente
@@ -25,72 +37,86 @@ class Cliente
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost"})
      */
-    private $codigo_cliente;
+    private $codigo;
 
     /**
      * @ORM\Column(type="string", length=14)
+     * @Groups({"clientePost"})
      */
     private $cnpj;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $razao_social;
+    * @ORM\Column(type="string", length=255)
+    * @Groups({"clientePost"})
+    */
+    private $razaoSocial;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $logradouro;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $bairro;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $cep;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $telefone1;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $telefone2;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"clientePost"})
      */
     private $telefone3;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"clientePost"})
      */
     private $observacao;
 
     /**
      * @ORM\OneToOne(targetEntity=ClienteInfo::class, mappedBy="cliente", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Groups({"clientePost"})
      */
     private $clienteInfo;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contato::class, mappedBy="cliente", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Contato::class, mappedBy="cliente", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Groups({"clientePost"})
      */
     private $contatos;
 
@@ -104,14 +130,14 @@ class Cliente
         return $this->id;
     }
 
-    public function getCodigoCliente(): ?string
+    public function getCodigo(): ?string
     {
-        return $this->codigo_cliente;
+        return $this->codigo;
     }
 
-    public function setCodigoCliente(?string $codigo_cliente): self
+    public function setCodigo(?string $codigo): self
     {
-        $this->codigo_cliente = $codigo_cliente;
+        $this->codigo = $codigo;
 
         return $this;
     }
@@ -130,12 +156,12 @@ class Cliente
 
     public function getRazaoSocial(): ?string
     {
-        return $this->razao_social;
+        return $this->razaoSocial;
     }
 
-    public function setRazaoSocial(string $razao_social): self
+    public function setRazaoSocial(string $razaoSocial): self
     {
-        $this->razao_social = $razao_social;
+        $this->razaoSocial = $razaoSocial;
 
         return $this;
     }
