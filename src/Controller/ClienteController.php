@@ -4,13 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Cliente;
 use App\Repository\ClienteRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ClienteController extends AbstractController
+class ClienteController extends BaseController
 {
 
     private ClienteRepository $repository;
