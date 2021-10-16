@@ -314,24 +314,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     }
 
-    public function getCriatedAt(): ?\DateTimeImmutable
+    public function getCriatedAt(): ?\DateTimeInterface
     {
         return $this->criatedAt;
     }
 
-    public function setCriatedAt(?\DateTimeImmutable $criatedAt): self
+    public function setCriatedAt(?\DateTimeInterface $criatedAt): self
     {
         $this->criatedAt = $criatedAt;
 
         return $this;
     }
 
-    public function getChangedAt(): ?\DateTimeImmutable
+    public function getChangedAt(): ?\DateTimeInterface
     {
         return $this->changedAt;
     }
 
-    public function setChangedAt(?\DateTimeImmutable $changedAt): self
+    public function setChangedAt(?\DateTimeInterface $changedAt): self
     {
         $this->changedAt = $changedAt;
 
