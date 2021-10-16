@@ -41,6 +41,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
+     * Plain password. Used for model validation. Must not be persisted.
+     */
+    private $plainPassword;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $enabled;
@@ -69,6 +74,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $codigo;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $criatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $changedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     public function __construct()
     {
@@ -160,6 +180,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+
     /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
@@ -177,7 +199,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getEnabled(): ?bool
@@ -263,6 +285,67 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCodigo(?string $codigo): self
     {
         $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+
+        // IMPORTANTE:
+        // Pelo menos um campo precisa ser alterado para que o Doctrine acione
+        // os Event Listeners que executam o encode da senha
+        // (Mesmo princípio utilizado para o Vich Uploader)
+        if ($plainPassword) {
+            $this->changedAt = new \DateTime();
+        }
+
+    }
+
+    public function getCriatedAt(): ?\DateTimeImmutable
+    {
+        return $this->criatedAt;
+    }
+
+    public function setCriatedAt(?\DateTimeImmutable $criatedAt): self
+    {
+        $this->criatedAt = $criatedAt;
+
+        return $this;
+    }
+
+    public function getChangedAt(): ?\DateTimeImmutable
+    {
+        return $this->changedAt;
+    }
+
+    public function setChangedAt(?\DateTimeImmutable $changedAt): self
+    {
+        $this->changedAt = $changedAt;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
