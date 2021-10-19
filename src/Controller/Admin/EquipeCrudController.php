@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Equipe;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -24,11 +25,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class UserCrudController extends AbstractCrudController
+class EquipeCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return User::class;
+        return Equipe::class;
     }
 
     /*
@@ -44,9 +45,9 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Usuário')
-            ->setSearchFields(['email', 'nome'])
-            ->setDefaultSort(['email' => 'ASC'])
+            ->setPageTitle(Crud::PAGE_INDEX, 'Equipe')
+            ->setSearchFields(['nome', 'userGerente.email', 'userSupervisor.email'])
+            ->setDefaultSort(['nome' => 'ASC'])
             ->setPaginatorPageSize(30);
     }
 
@@ -54,6 +55,7 @@ class UserCrudController extends AbstractCrudController
     {
 
         return $actions
+
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
                 return $action->setIcon('fa fa-fw fa-pencil');
@@ -72,38 +74,17 @@ class UserCrudController extends AbstractCrudController
 
         $id = IntegerField::new('id', 'ID');
         $nome = TextField::new('nome');
-        $codigo = TextField::new('codigo');
-        $telefone = TextField::new('telefone');
-        $email = EmailField::new('email');
-        $equipes = AssociationField::new('equipes');
-
-        $enabled = BooleanField::new('enabled');
-
-        $lastLogin = DateTimeField::new('lastLogin');
-        
-        $roles = ChoiceField::new('roles')->setChoices(
-            [
-                'Admin' => 'ROLE_ADMIN',
-                'Usuário' => 'ROLE_USER'
-
-            ])->allowMultipleChoices();
-
-        $password = TextField::new('plainPassword')->setLabel('Senha')->setFormType(PasswordType::class);
+        $gerente = AssociationField::new('userGerente');
+        $supervisor = AssociationField::new('userSupervisor');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $email, $nome, $equipes, $enabled, $equipes, $lastLogin];
+            return [$id, $nome, $gerente, $supervisor];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$email, $enabled, $id, $nome, $telefone, $equipes, $lastLogin];
+            return [$nome, $gerente, $supervisor];
         } elseif (Crud::PAGE_NEW === $pageName) {
-
-            $password->setRequired(true);
-            $enabled->setFormTypeOptions(['data' => true]);
-            $roles->setFormTypeOptions(['data' => ['ROLE_USER'] ]);
-
-            return [$codigo, $email, $password, $nome, $telefone, $roles, $equipes, $enabled];
+            return [$nome, $gerente, $supervisor];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-
-            return [$codigo, $email, $password,  $nome, $telefone, $roles, $equipes, $enabled];
+            return [$nome, $gerente, $supervisor];
         }
     }
 }

@@ -35,10 +35,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToRoute('CRM Home', 'fa fa-home', 'crm_index'),
             
             MenuItem::subMenu('Cadastros', 'fa fa-database')->setSubItems([
-                //MenuItem::linkToCrud('Equipe', 'fas fa-user', Equipe::class),
+                MenuItem::linkToCrud('Equipe', 'fas fa-users', Equipe::class),
                 MenuItem::linkToCrud('Usuario', 'fas fa-user', User::class),
                 //MenuItem::linkToCrud('Empresa', 'fas fa-user', Empresa::class),
-                //MenuItem::linkToCrud('Estabelecimento', 'fas fa-user', Estabelecimento::class),
+                MenuItem::linkToCrud('Estabelecimento', 'fas fa-building', Estabelecimento::class),
                 //MenuItem::linkToCrud('Produto', 'fas fa-user', Produto::class)
             ])
 

@@ -27,12 +27,12 @@ class Equipe
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      */
-    private $user_gerente;
+    private $userGerente;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      */
-    private $user_supervisor;
+    private $userSupervisor;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="equipes")
@@ -42,6 +42,11 @@ class Equipe
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->nome;
     }
 
     public function getId(): ?int
@@ -63,24 +68,24 @@ class Equipe
 
     public function getUserGerente(): ?User
     {
-        return $this->user_gerente;
+        return $this->userGerente;
     }
 
-    public function setUserGerente(?User $user_gerente): self
+    public function setUserGerente(?User $userGerente): self
     {
-        $this->user_gerente = $user_gerente;
+        $this->userGerente = $userGerente;
 
         return $this;
     }
 
     public function getUserSupervisor(): ?User
     {
-        return $this->user_supervisor;
+        return $this->userSupervisor;
     }
 
-    public function setUserSupervisor(?User $user_supervisor): self
+    public function setUserSupervisor(?User $userSupervisor): self
     {
-        $this->user_supervisor = $user_supervisor;
+        $this->userSupervisor = $userSupervisor;
 
         return $this;
     }
