@@ -83,16 +83,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $changedAt;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastLogin;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Vendedor::class, cascade={"persist", "remove"})
+     */
+    private $vendedor;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Cliente::class, mappedBy="users")
+     */
+    private $clientes;
+
     public function __construct()
     {
         $this->equipes = new ArrayCollection();
+        $this->clientes = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -314,7 +325,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // os Event Listeners que executam o encode da senha
         // (Mesmo princípio utilizado para o Vich Uploader)
         if ($plainPassword) {
-            $this->changedAt = new \DateTime();
+            $this->updatedAt = new \DateTime();
         }
 
     }
@@ -331,14 +342,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getChangedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->changedAt;
+        return $this->updatedAt;
     }
 
-    public function setChangedAt(?\DateTimeInterface $changedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->changedAt = $changedAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -351,6 +362,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastLogin(?\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getVendedor(): ?Vendedor
+    {
+        return $this->vendedor;
+    }
+
+    public function setVendedor(?Vendedor $vendedor): self
+    {
+        $this->vendedor = $vendedor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cliente[]
+     */
+    public function getClientes(): Collection
+    {
+        return $this->clientes;
+    }
+
+    public function addCliente(Cliente $cliente): self
+    {
+        if (!$this->clientes->contains($cliente)) {
+            $this->clientes[] = $cliente;
+            $cliente->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCliente(Cliente $cliente): self
+    {
+        if ($this->clientes->removeElement($cliente)) {
+            $cliente->removeUser($this);
+        }
 
         return $this;
     }

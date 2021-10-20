@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ClienteRepository::class)
@@ -120,9 +121,39 @@ class Cliente
      */
     private $contatos;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Seguimento::class, inversedBy="clientes")
+     * @Groups({"clientePost"})
+     */
+    private $seguimento;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="clientes")
+     */
+    private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="cliente", orphanRemoval=true)
+     */
+    private $followups;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $updated_at;
+
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->followups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -322,6 +353,96 @@ class Cliente
                 $contato->setCliente(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSeguimento(): ?Seguimento
+    {
+        return $this->seguimento;
+    }
+
+    public function setSeguimento(?Seguimento $seguimento): self
+    {
+        $this->seguimento = $seguimento;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Followup[]
+     */
+    public function getFollowups(): Collection
+    {
+        return $this->followups;
+    }
+
+    public function addFollowup(Followup $followup): self
+    {
+        if (!$this->followups->contains($followup)) {
+            $this->followups[] = $followup;
+            $followup->setCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowup(Followup $followup): self
+    {
+        if ($this->followups->removeElement($followup)) {
+            // set the owning side to null (unless already changed)
+            if ($followup->getCliente() === $this) {
+                $followup->setCliente(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }
