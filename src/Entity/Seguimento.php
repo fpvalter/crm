@@ -10,9 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *      denormalizationContext={"groups"={"clientePost"}}
- * )
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=SeguimentoRepository::class)
  */
 class Seguimento
@@ -26,13 +24,11 @@ class Seguimento
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"clientePost"})
      */
     private $descricao;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FollowupRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=FollowupRepository::class)
@@ -30,13 +31,15 @@ class Followup
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      */
-    private $updated_at;
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -69,24 +72,24 @@ class Followup
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $created_at): self
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
