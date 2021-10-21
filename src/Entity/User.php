@@ -103,10 +103,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $clientes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="user")
+     */
+    private $followups;
+
     public function __construct()
     {
         $this->equipes = new ArrayCollection();
         $this->clientes = new ArrayCollection();
+        $this->followups = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -403,6 +409,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->clientes->removeElement($cliente)) {
             $cliente->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Followup[]
+     */
+    public function getFollowups(): Collection
+    {
+        return $this->followups;
+    }
+
+    public function addFollowup(Followup $followup): self
+    {
+        if (!$this->followups->contains($followup)) {
+            $this->followups[] = $followup;
+            $followup->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowup(Followup $followup): self
+    {
+        if ($this->followups->removeElement($followup)) {
+            // set the owning side to null (unless already changed)
+            if ($followup->getUser() === $this) {
+                $followup->setUser(null);
+            }
         }
 
         return $this;

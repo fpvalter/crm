@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/cliente")
+ */
 class ClienteController extends BaseController
 {
 
@@ -20,7 +23,7 @@ class ClienteController extends BaseController
     }
 
     /**
-     * @Route("/cliente", name="cliente")
+     * @Route("/", name="cliente")
      */
     public function index(): Response
     {
@@ -48,7 +51,7 @@ class ClienteController extends BaseController
             $r['action_column'] = '<div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <b class="caret"></b></button>
                                         <div class="dropdown-menu dropdown-menu-right" style="z-index: 99999">
-                                            <a class="dropdown-item" href="' . $this->generateUrl('cliente_show', ['cliente' => $r['id']]) . '"><i class="fa fa-fw icon-info"></i> Ver</a>
+                                            <a class="dropdown-item" href="' . $this->generateUrl('cliente_detail', ['cliente' => $r['id']]) . '"><i class="fa fa-fw icon-info"></i> Ver</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="' . $this->generateUrl('cliente_contato', ['cliente' => $r['id']]) . '"><i class="fa fa-fw fa-comments-o"></i> Contatos</a>
                                         </div>
@@ -68,11 +71,13 @@ class ClienteController extends BaseController
     }
 
     /**
-     * @Route("{cliente}/show", name="cliente_show")
+     * @Route("/{cliente}/detail", name="cliente_detail")
      */
     public function show(Request $request, Cliente $cliente): Response
     {
-        return $this->render('cliente/index.html.twig');
+        return $this->render('cliente/detail.html.twig', [
+            "cliente" => $cliente
+        ]);
     }
 
     /**

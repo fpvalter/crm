@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cliente :: {{ cliente.razaoSocial }} {% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="{{ path('cliente') }}" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Cliente</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item"><a href="{{ path('cliente') }}">Clientes</a></li>
+                <li class="breadcrumb-item active">Detalhe</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-9 col-md-9">
+            <div class="card client-detail">
+                <div class="body">
+                    
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="m-t-0 m-b-0"><strong>{{ cliente.razaoSocial }}</strong></h4>
+                                        <span>{{ cliente.cnpj }}</span>
+                                        <p class="m-t-15">
+                                            {{ cliente.logradouro }}, {{ cliente.numero }}, {{ cliente.bairro }} - CIDADE-UF 
+                                            <br>CEP: {{ cliente.cep }}
+                                        </p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        {% if cliente.telefone1 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone1 }} &nbsp {% endif %}
+                                    </div>
+                                    <div class="col-4">
+                                        {% if cliente.telefone2 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone2 }} &nbsp{% endif %}
+                                    </div>
+                                    <div class="col-4">
+                                        {% if cliente.telefone3 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone3 }} {% endif %}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p>
+                                            {% if cliente.users|length == 0 %}
+                                                Não há vendedor vinculado
+
+                                            {% else %}
+                                                Vendedores<br>
+                                                {% for user in cliente.users %}
+                                                    <br>{{ user.email }}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            <div class="col-4 bg-light p-t-15">
+                                {% if cliente.clienteInfo %}
+                                    <div class="row m-t-15">
+                                        <div class="col-4">
+                                            <span class="badge badge-success">R: {{ cliente.clienteInfo.r }}</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <span class="badge badge-success">F: {{ cliente.clienteInfo.f }}</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <span class="badge badge-success">V: {{ cliente.clienteInfo.v }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-t-15">
+                                        <div class="col-12">
+                                            <span class="badge badge-info">Crédito: {{ cliente.clienteInfo.credito }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-t-15">
+                                        <div class="col-12">
+                                            <span class="badge badge-info">Validade: {{ cliente.clienteInfo.creditoValidade|date('d/m/Y') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-t-15">
+                                        <div class="col-12">
+                                            <span class="badge badge-info">Ultima compra há {{ cliente.clienteInfo.diasUltimaCompra }} dias</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Followup</h2>
+                </div>
+                <div class="body">
+                    <form method="post" action="{{ path('followup_new') }}">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea name="descricao_followup" required="required" class="form-control" rows="5" placeholder="Descrição"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">   
+                                <div class="m-t-15 pull-right">
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="cliente_id" value="{{ cliente.id }}" />
+                        <input type="hidden" name="token" value="{{ csrf_token('add_followup') }}" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            
+
+        });
+
+    </script>
+{% endblock %}
