@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Cliente;
+use App\Entity\Contato;
+use App\Form\ContatoType;
 use App\Repository\ContatoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,7 +56,7 @@ class ContatoController extends AbstractController
             $r['action_column'] = '<div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <b class="caret"></b></button>
                                         <div class="dropdown-menu dropdown-menu-right" style="z-index: 99999">
-                                            
+                                            <a class="dropdown-item" href="' . $this->generateUrl('contato_edit', ['contato' => $r['id']]) . '"><i class="fa fa-fw fa-edit"></i> Editar</a>
                                         </div>
                                     </div>
                                 ';
@@ -68,6 +70,62 @@ class ContatoController extends AbstractController
             "recordsTotal" => $total_objects_count,
             "recordsFiltered" => $filtered_objects_count,
             "data" => $results["results"]
+        ]);
+    }
+
+    /**
+     * @Route("/{cliente}/new", name="contato_new")
+     */
+    public function new(Request $request, Cliente $cliente): Response
+    {
+        $contato = new Contato();
+        $contato->setCliente($cliente);
+
+        $form = $this->createForm(ContatoType::class, $contato);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contato);
+            $em->flush();
+
+            $this->addFlash('info', 'Contato adicionado com sucesso');
+
+            return $this->redirectToRoute('contato', ['cliente' => $cliente->getId()]);
+
+        }
+
+        return $this->renderForm('contato/new.html.twig', [
+            'form' => $form,
+            'cliente' => $cliente
+        ]);
+    }
+
+    /**
+     * @Route("/{contato}/edit", name="contato_edit")
+     */
+    public function edit(Request $request, Contato $contato): Response
+    {
+
+        $form = $this->createForm(ContatoType::class, $contato);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contato);
+            $em->flush();
+
+            $this->addFlash('info', 'Contato alterado com sucesso');
+
+            return $this->redirectToRoute('contato', ['cliente' => $contato->getCliente()->getId()]);
+
+        }
+
+        return $this->renderForm('contato/edit.html.twig', [
+            'form' => $form,
+            'cliente' => $contato->getCliente()
         ]);
     }
 }

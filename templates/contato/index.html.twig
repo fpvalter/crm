@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-lg-6 col-md-8 col-sm-12">
-            <h2><a href="{{ path('cliente') }}" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Contatos</h2>
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Contatos</h2>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
                 <li class="breadcrumb-item">Cadastros</li>
@@ -33,6 +33,11 @@
     <div class="row clearfix">
         <div class="col-lg-12">
             <div class="card">
+                <div class="header">
+                    <ul class="header-dropdown">
+                        <li><a class="tab_btn" href="{{ path('contato_new', {'cliente' : cliente.id}) }}" data-toggle="tooltip" data-placement="top" title="Adicionar contato">+</a></li>
+                    </ul>
+                </div>
                 <div class="body">
                     <div class="table-responsive">
                         <table id="table_contatos" class="table table-hover dataTable">
