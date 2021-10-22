@@ -2,18 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Equipe;
-use App\Entity\User;
-use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
-use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use App\Entity\Cliente;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -25,29 +18,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class EquipeCrudController extends AbstractCrudController
+class ClienteCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Equipe::class;
+        return Cliente::class;
     }
-
-    /*
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $response = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $response->andWhere("entity.enabled = true");
-
-        return $response;
-    }
-    */
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Equipe')
-            ->setSearchFields(['nome', 'userGerente.email', 'userSupervisor.email'])
-            ->setDefaultSort(['nome' => 'ASC'])
+            ->setPageTitle(Crud::PAGE_INDEX, 'Usuário')
+            ->setSearchFields(['razaoSocial', 'cnpj'])
+            ->setDefaultSort(['razaoSocial' => 'ASC'])
             ->setPaginatorPageSize(30);
     }
 
@@ -55,7 +38,6 @@ class EquipeCrudController extends AbstractCrudController
     {
 
         return $actions
-
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
                 return $action->setIcon('fa fa-fw fa-pencil');
@@ -73,19 +55,20 @@ class EquipeCrudController extends AbstractCrudController
     {
 
         $id = IntegerField::new('id', 'ID');
-        $nome = TextField::new('nome');
-        $gerente = AssociationField::new('userGerente');
-        $supervisor = AssociationField::new('userSupervisor');
+        $codigo = TextField::new('codigo');
+        $razaoSocial = TextField::new('razaoSocial');
+        $cnpj = TextField::new('cnpj');
         $users = AssociationField::new('users');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $nome, $gerente, $supervisor, $users];
+            return [$id, $razaoSocial, $cnpj, $users];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$nome, $gerente, $supervisor, $users];
+            return [$id, $razaoSocial, $cnpj, $users];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$nome, $gerente, $supervisor, $users];
+            return [$codigo, $razaoSocial, $cnpj, $users];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$nome, $gerente, $supervisor, $users];
+
+            return [$codigo, $razaoSocial, $cnpj, $users];
         }
     }
 }

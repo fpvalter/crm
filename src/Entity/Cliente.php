@@ -148,11 +148,17 @@ class Cliente
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Negocio::class, mappedBy="cliente")
+     */
+    private $negocios;
+
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->followups = new ArrayCollection();
+        $this->negocios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -442,6 +448,36 @@ class Cliente
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Negocio[]
+     */
+    public function getNegocios(): Collection
+    {
+        return $this->negocios;
+    }
+
+    public function addNegocio(Negocio $negocio): self
+    {
+        if (!$this->negocios->contains($negocio)) {
+            $this->negocios[] = $negocio;
+            $negocio->setCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNegocio(Negocio $negocio): self
+    {
+        if ($this->negocios->removeElement($negocio)) {
+            // set the owning side to null (unless already changed)
+            if ($negocio->getCliente() === $this) {
+                $negocio->setCliente(null);
+            }
+        }
 
         return $this;
     }

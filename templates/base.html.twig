@@ -262,6 +262,25 @@
                         {% block body_header %} {% endblock %}
                     </div>
 
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-bordered fade show m-b-10">
+                            {{ message | nl2br }}
+                            <span class="close" data-dismiss="alert">&times;</span>
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger alert-bordered fade show m-b-10">
+                            {{ message | nl2br }}
+                            <span class="close" data-dismiss="alert">&times;</span>
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('info') %}
+                        <div class="alert alert-info alert-bordered fade show m-b-10">
+                            {{ message | nl2br }}
+                            <span class="close" data-dismiss="alert">&times;</span>
+                        </div>
+                    {% endfor %}
+
                     {% block body %}{% endblock %}
 
                 </div>

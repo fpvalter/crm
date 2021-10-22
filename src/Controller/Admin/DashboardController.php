@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Cliente;
 use App\Entity\Empresa;
 use App\Entity\Equipe;
 use App\Entity\Estabelecimento;
@@ -35,10 +36,11 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToRoute('CRM Home', 'fa fa-home', 'crm_index'),
             
             MenuItem::subMenu('Cadastros', 'fa fa-database')->setSubItems([
+                MenuItem::linkToCrud('Cliente', 'fas fa-building', Cliente::class),
                 MenuItem::linkToCrud('Equipe', 'fas fa-users', Equipe::class),
                 MenuItem::linkToCrud('Usuario', 'fas fa-user', User::class),
                 //MenuItem::linkToCrud('Empresa', 'fas fa-user', Empresa::class),
-                MenuItem::linkToCrud('Estabelecimento', 'fas fa-building', Estabelecimento::class),
+                MenuItem::linkToCrud('Estabelecimento', 'fas fa-university', Estabelecimento::class),
                 //MenuItem::linkToCrud('Produto', 'fas fa-user', Produto::class)
             ])
 
