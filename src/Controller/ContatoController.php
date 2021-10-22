@@ -3,37 +3,40 @@
 namespace App\Controller;
 
 use App\Entity\Cliente;
-use App\Repository\ClienteRepository;
+use App\Repository\ContatoRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/cliente")
+ * @Route("/cliente/contato")
  */
-class ClienteController extends BaseController
+class ContatoController extends AbstractController
 {
 
-    private ClienteRepository $repository;
+    private ContatoRepository $repository;
 
-    public function __construct(ClienteRepository $repository)
+    public function __construct(ContatoRepository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
-     * @Route("/", name="cliente")
+     * @Route("/{cliente}", name="contato")
      */
-    public function index(): Response
+    public function index(Cliente $cliente): Response
     {
-        return $this->render('cliente/index.html.twig');
+        return $this->render('contato/index.html.twig', [
+            'cliente' => $cliente
+        ]);
     }
 
     /**
-     * @Route("/cliente_list", name="cliente_list", methods="POST")
+     * @Route("/{cliente}/contato_list", name="contato_list", methods="POST")
      */
-    public function list(Request $request): JsonResponse
+    public function list(Request $request, Cliente $cliente): JsonResponse
     {
 
         $draw = intval($request->request->get('draw'));
@@ -45,21 +48,19 @@ class ClienteController extends BaseController
         
         $action_filter = null;
         
-        $results = $this->repository->listDataTable($start, $length, $order, $search, $action_filter);
+        $results = $this->repository->listDataTable($cliente->getId(), $start, $length, $order, $search, $action_filter);
 
         foreach ($results["results"] as &$r) {
             $r['action_column'] = '<div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <b class="caret"></b></button>
                                         <div class="dropdown-menu dropdown-menu-right" style="z-index: 99999">
-                                            <a class="dropdown-item" href="' . $this->generateUrl('cliente_detail', ['cliente' => $r['id']]) . '"><i class="fa fa-fw icon-info"></i> Ver</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="' . $this->generateUrl('contato', ['cliente' => $r['id']]) . '"><i class="fa fa-fw fa-comments-o"></i> Contatos</a>
+                                            
                                         </div>
                                     </div>
                                 ';
         }
 
-        $total_objects_count = $this->repository->countClientes();
+        $total_objects_count = $this->repository->countContatosCliente($cliente->getId());
         $filtered_objects_count = $results["countResult"];
 
         return $this->json([
@@ -69,15 +70,4 @@ class ClienteController extends BaseController
             "data" => $results["results"]
         ]);
     }
-
-    /**
-     * @Route("/{cliente}/detail", name="cliente_detail")
-     */
-    public function show(Request $request, Cliente $cliente): Response
-    {
-        return $this->render('cliente/detail.html.twig', [
-            "cliente" => $cliente
-        ]);
-    }
-    
 }

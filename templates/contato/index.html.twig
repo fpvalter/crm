@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contatos {{ cliente.razaoSocial }}{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css') }}">
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="{{ path('cliente') }}" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Contatos</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item"><a href="{{ path('cliente') }}">Clientes</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('cliente_detail', { 'cliente' : cliente.id }) }}">{{ cliente.razaoSocial }}</a></li>
+                <li class="breadcrumb-item active">Contatos</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    <div class="table-responsive">
+                        <table id="table_contatos" class="table table-hover dataTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Telefone</th>
+                                    <th>Nascimento</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Telefone</th>
+                                    <th>Nascimento</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            let dataTable = $('#table_contatos').DataTable( {
+                "responsive": true,
+                "language": {
+                    url: '{{ asset('assets/bundles/datatablesportuguese.json') }}'
+                },
+                "deferRender": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": '{{ path('contato_list', {'cliente' : cliente.id}) }}',
+                    "type": 'POST',
+                    "data": (data) => {
+                        //data.some_filter = $("#some_filter").val()
+                    }
+                },
+                "columns": [
+                    { "data": "codigo" },
+                    { "data": "nome" },
+                    { "data": "email" },
+                    { "data": "telefone" },
+                    { "data": "dataNascimento", "orderable": false },
+                    {
+                        "data":           'action_column',
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": ''
+                    },
+                ],
+                "order": [[1, 'asc']]
+            } );
+
+        });
+
+    </script>
+{% endblock %}
