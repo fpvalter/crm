@@ -34,6 +34,7 @@ class Cliente
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"notaFiscalPost"})
      */
     private $id;
 
@@ -153,12 +154,18 @@ class Cliente
      */
     private $negocios;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NotaFiscal::class, mappedBy="cliente")
+     */
+    private $notaFiscals;
+
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->followups = new ArrayCollection();
         $this->negocios = new ArrayCollection();
+        $this->notaFiscals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -476,6 +483,36 @@ class Cliente
             // set the owning side to null (unless already changed)
             if ($negocio->getCliente() === $this) {
                 $negocio->setCliente(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NotaFiscal[]
+     */
+    public function getNotaFiscals(): Collection
+    {
+        return $this->notaFiscals;
+    }
+
+    public function addNotaFiscal(NotaFiscal $notaFiscal): self
+    {
+        if (!$this->notaFiscals->contains($notaFiscal)) {
+            $this->notaFiscals[] = $notaFiscal;
+            $notaFiscal->setCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotaFiscal(NotaFiscal $notaFiscal): self
+    {
+        if ($this->notaFiscals->removeElement($notaFiscal)) {
+            // set the owning side to null (unless already changed)
+            if ($notaFiscal->getCliente() === $this) {
+                $notaFiscal->setCliente(null);
             }
         }
 

@@ -10,6 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EstabelecimentoRepository::class)
@@ -32,6 +33,7 @@ class Estabelecimento
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"produtoPost", "notaFiscalPost"})
      */
     private $id;
 
@@ -97,9 +99,15 @@ class Estabelecimento
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NotaFiscal::class, mappedBy="Estabelecimento")
+     */
+    private $notaFiscals;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->notaFiscals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,6 +273,36 @@ class Estabelecimento
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NotaFiscal[]
+     */
+    public function getNotaFiscals(): Collection
+    {
+        return $this->notaFiscals;
+    }
+
+    public function addNotaFiscal(NotaFiscal $notaFiscal): self
+    {
+        if (!$this->notaFiscals->contains($notaFiscal)) {
+            $this->notaFiscals[] = $notaFiscal;
+            $notaFiscal->setEstabelecimento($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotaFiscal(NotaFiscal $notaFiscal): self
+    {
+        if ($this->notaFiscals->removeElement($notaFiscal)) {
+            // set the owning side to null (unless already changed)
+            if ($notaFiscal->getEstabelecimento() === $this) {
+                $notaFiscal->setEstabelecimento(null);
+            }
+        }
 
         return $this;
     }

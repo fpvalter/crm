@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProdutoEstabelecimentoRepository::class)
@@ -35,6 +36,7 @@ class ProdutoEstabelecimento
     /**
      * @ORM\ManyToOne(targetEntity=Estabelecimento::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"produtoPost"})
      */
     private $estabelecimento;
 
@@ -46,11 +48,13 @@ class ProdutoEstabelecimento
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"produtoPost"})
      */
     private $diasUltimaVenda;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"produtoPost"})
      */
     private $diferencaEntradaSaida;
 

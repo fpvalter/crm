@@ -16,7 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass=ProdutoRepository::class)
  * @ApiResource(
  *      collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "patch"}
+ *      itemOperations={"get", "put", "patch"},
+ *      denormalizationContext={"groups"={"produtoPost"}}
  * )
  * @ApiFilter(
  *      SearchFilter::class, 
@@ -29,26 +30,31 @@ class Produto
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"notaFiscalPost"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"produtoPost"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"produtoPost"})
      */
     private $descricao;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"produtoPost"})
      */
     private $categoria;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProdutoEstabelecimento::class, mappedBy="produto", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=ProdutoEstabelecimento::class, mappedBy="produto", orphanRemoval=true, cascade={"persist", "remove"})
+     * @Groups({"produtoPost"})
      */
     private $produtoEstabelecimentos;
 
