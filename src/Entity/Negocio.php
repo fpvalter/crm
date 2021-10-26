@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\NegocioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -45,6 +47,16 @@ class Negocio
      * @ORM\ManyToOne(targetEntity=NegocioEtapa::class, inversedBy="negocios")
      */
     private $negocioEtapa;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="negocio")
+     */
+    private $followups;
+
+    public function __construct()
+    {
+        $this->followups = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +119,36 @@ class Negocio
     public function setNegocioEtapa(?NegocioEtapa $negocioEtapa): self
     {
         $this->negocioEtapa = $negocioEtapa;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Followup[]
+     */
+    public function getFollowups(): Collection
+    {
+        return $this->followups;
+    }
+
+    public function addFollowup(Followup $followup): self
+    {
+        if (!$this->followups->contains($followup)) {
+            $this->followups[] = $followup;
+            $followup->setNegocio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowup(Followup $followup): self
+    {
+        if ($this->followups->removeElement($followup)) {
+            // set the owning side to null (unless already changed)
+            if ($followup->getNegocio() === $this) {
+                $followup->setNegocio(null);
+            }
+        }
 
         return $this;
     }

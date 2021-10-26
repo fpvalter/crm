@@ -1,0 +1,13 @@
+{% for followup in followups %}    
+   
+    <div class="timeline-item {{ followup.tipo }}">
+        <span class="date">{{ followup.createdAt|date('d/m/Y H:i') }}</span>
+        <span>By: <a href="javascript:void(0);" title="{{ followup.user.email }}">{{ followup.user.email }}</a></span>
+        <div class="msg">
+            <p>
+                {{ followup.descricao }}
+            </p>
+        </div>
+    </div>
+
+{% endfor %}

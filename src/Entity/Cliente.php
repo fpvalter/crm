@@ -159,6 +159,12 @@ class Cliente
      */
     private $notaFiscals;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"clientePost"})
+     */
+    private $diaEntrega;
+
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
@@ -515,6 +521,18 @@ class Cliente
                 $notaFiscal->setCliente(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDiaEntrega(): ?int
+    {
+        return $this->diaEntrega;
+    }
+
+    public function setDiaEntrega(?int $diaEntrega): self
+    {
+        $this->diaEntrega = $diaEntrega;
 
         return $this;
     }

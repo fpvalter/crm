@@ -19,6 +19,23 @@ class FollowupRepository extends ServiceEntityRepository
         parent::__construct($registry, Followup::class);
     }
 
+    public function findFollowupsTimelineByCliente(int $cliente_id, int $page)
+    {
+
+        $offset = $page * 10;
+
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.cliente = :cliente_id')
+            ->setParameter('cliente_id', $cliente_id)
+            ->orderBy('f.id', 'ASC')
+            ->setMaxResults(10)
+            ->setFirstResult($offset)
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Followup[] Returns an array of Followup objects
     //  */

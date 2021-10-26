@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Cliente;
 use App\Entity\Followup;
+use App\Entity\FollowupTipo;
+use App\Repository\FollowupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +18,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class FollowupController extends AbstractController
 {
+
+    private FollowupRepository $repository;
+
+    public function __construct(FollowupRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("/", name="followup")
      */
@@ -38,6 +48,7 @@ class FollowupController extends AbstractController
             $cliente = $this->getDoctrine()->getRepository(Cliente::class)->find($cliente_id);
 
             $followup = new Followup();
+            $followup->setTipo(FollowupTipo::INFO);
             $followup->setCliente($cliente);
             $followup->setUser($this->getUser());
             $followup->setDescricao($descricao);
@@ -50,5 +61,21 @@ class FollowupController extends AbstractController
         }
 
         throw new AccessDeniedException();
+    }
+
+    /**
+     * @Route("/timeline-cliente", name="followup_get_by_cliente", methods="POST")
+     */
+    public function getFollowupsByCliente(Request $request): Response
+    {
+
+        $cliente_id = $request->request->get('cliente_id');
+        $page = $request->request->get('page');
+
+        $followups = $this->repository->findFollowupsTimelineByCliente($cliente_id, $page);
+
+        return $this->render('followup/_timeline.html.twig', [
+            'followups' => $followups
+        ]);
     }
 }

@@ -47,6 +47,16 @@ class Followup
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Negocio::class, inversedBy="followups")
+     */
+    private $negocio;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $tipo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +118,30 @@ class Followup
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getNegocio(): ?Negocio
+    {
+        return $this->negocio;
+    }
+
+    public function setNegocio(?Negocio $negocio): self
+    {
+        $this->negocio = $negocio;
+
+        return $this;
+    }
+
+    public function getTipo(): ?string
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(?string $tipo): self
+    {
+        $this->tipo = $tipo;
 
         return $this;
     }
