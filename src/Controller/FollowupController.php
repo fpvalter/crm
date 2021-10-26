@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cliente;
 use App\Entity\Followup;
-use App\Entity\FollowupTipo;
+use App\Enum\FollowupTipo;
 use App\Repository\FollowupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
