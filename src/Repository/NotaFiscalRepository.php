@@ -19,6 +19,20 @@ class NotaFiscalRepository extends ServiceEntityRepository
         parent::__construct($registry, NotaFiscal::class);
     }
 
+    public function findLastNotaFiscalByClienteEstabelecimento(int $cliente_id, int $estabelecimento_id)
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.cliente = :cliente_id')
+            ->andWhere('n.estabelecimento = :estabelecimento_id')
+            ->setParameter('cliente_id', $cliente_id)
+            ->setParameter('estabelecimento_id', $estabelecimento_id)
+            ->orderBy('n.emissao', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return NotaFiscal[] Returns an array of NotaFiscal objects
     //  */

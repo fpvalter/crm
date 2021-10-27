@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Cliente;
+use App\Entity\Estabelecimento;
+use App\Entity\NotaFiscal;
 use App\Repository\ClienteRepository;
+use App\Repository\NotaFiscalRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,8 +78,24 @@ class ClienteController extends BaseController
      */
     public function show(Request $request, Cliente $cliente): Response
     {
+
+        $ultimaNotaEstabelecimentos = [];
+
+        $notaFiscalRepo = $this->getDoctrine()->getRepository(NotaFiscal::class);
+
+        $estabelecimentoRepo = $this->getDoctrine()->getRepository(Estabelecimento::class);
+        $estabelecimentos = $estabelecimentoRepo->findAll();
+        foreach($estabelecimentos as $estab) {
+            $nota = $notaFiscalRepo->findLastNotaFiscalByClienteEstabelecimento($cliente->getId(), $estab->getId());
+            if($nota) {
+                $ultimaNotaEstabelecimentos[] = $nota;
+            }
+        }
+        
+
         return $this->render('cliente/detail.html.twig', [
-            "cliente" => $cliente
+            "cliente" => $cliente,
+            "ultimaNotaEstabelecimentos" => $ultimaNotaEstabelecimentos
         ]);
     }
     
