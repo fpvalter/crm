@@ -10,6 +10,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Enum\ClienteTipoCompra;
+use App\Enum\DiaEntrega;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -160,10 +162,16 @@ class Cliente
     private $notaFiscals;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Groups({"clientePost"})
      */
     private $diaEntrega;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"clientePost"})
+     */
+    private $tipoCompra;
 
     public function __construct()
     {
@@ -525,14 +533,36 @@ class Cliente
         return $this;
     }
 
-    public function getDiaEntrega(): ?int
+    public function getDiaEntrega(): ?string
     {
         return $this->diaEntrega;
     }
 
-    public function setDiaEntrega(?int $diaEntrega): self
+    public function setDiaEntrega(?string $diaEntrega): self
     {
+
+        if ($diaEntrega && !in_array($diaEntrega, DiaEntrega::$choices)) {
+            throw new \InvalidArgumentException("Dia entrega invalido! [" . implode(",", DiaEntrega::$choices) . "]");
+        }
+
         $this->diaEntrega = $diaEntrega;
+
+        return $this;
+    }
+
+    public function getTipoCompra(): ?string
+    {
+        return $this->tipoCompra;
+    }
+
+    public function setTipoCompra(?string $tipoCompra): self
+    {
+
+        if ($tipoCompra && !in_array($tipoCompra, ClienteTipoCompra::$choices)) {
+            throw new \InvalidArgumentException("Tipo compra invalido! [" . implode(",", ClienteTipoCompra::$choices) . "]");
+        }
+
+        $this->tipoCompra = $tipoCompra;
 
         return $this;
     }

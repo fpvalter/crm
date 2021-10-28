@@ -40,9 +40,13 @@
                                             {{ cliente.logradouro }}, {{ cliente.numero }}, {{ cliente.bairro }} - CIDADE-UF 
                                             <br>CEP: {{ cliente.cep }}
                                         </p>
-                                        <hr>
+                                        <p>
+                                            <span class="badge badge-info">Dia entrega: {{ cliente.diaEntrega }}</span>
+                                            <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra }}</span>
+                                        </p>
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="row">
                                     <div class="col-4">
                                         {% if cliente.telefone1 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone1 }} &nbsp {% endif %}
@@ -70,6 +74,8 @@
                                         </p>
                                     </div>
                                 </div>
+                                
+                                {% if ultimaNotaEstabelecimentos|length > 0 %}
                                 <hr>
                                 <div class="row">
                                     <div class="col-12">
@@ -98,7 +104,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+                                {% endif %}
+
                             </div>
                             <div class="col-4 bg-light p-t-15">
                                 {% if cliente.clienteInfo %}
@@ -125,7 +132,11 @@
                                     </div>
                                     <div class="row m-t-15">
                                         <div class="col-12">
-                                            <span class="badge badge-info">Ultima compra há {{ cliente.clienteInfo.diasUltimaCompra }} dias</span>
+                                            {% if cliente.clienteInfo.diasUltimaCompra > 30 %}
+                                                <span class="badge badge-danger"><strong>Ultima compra há {{ cliente.clienteInfo.diasUltimaCompra }} dias </strong></span>
+                                            {% else %}
+                                                <span class="badge badge-primary">Ultima compra há {{ cliente.clienteInfo.diasUltimaCompra }} dias</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endif %}

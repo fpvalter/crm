@@ -43,7 +43,7 @@
                         <table id="table_contatos" class="table table-hover dataTable">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Código</th>
+                                    <th>ID</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Telefone</th>
@@ -53,7 +53,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Código</th>
+                                    <th>ID</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Telefone</th>
@@ -94,10 +94,10 @@
                     }
                 },
                 "columns": [
-                    { "data": "codigo" },
+                    { "data": "id" },
                     { "data": "nome" },
                     { "data": "email" },
-                    { "data": "telefone" },
+                    { "data": "telefone", "orderable": false },
                     { "data": "dataNascimento", "orderable": false },
                     {
                         "data":           'action_column',

@@ -28,7 +28,7 @@ class ClienteRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function listDataTable($start, $length, $order, $search, $action_filter)
+    public function listDataTable($start, $length, $order, $search, $action_filter, $advanced_filter)
     {
 
         $search['value'] = str_replace("'", "", $search['value']);
@@ -49,6 +49,12 @@ class ClienteRepository extends ServiceEntityRepository
             $countQuery->andWhere($action_filter);
         }
 
+        if ($advanced_filter['filtro_dia_entrega'] != '') {
+            $filtro_status = "c.diaEntrega IN ('" . implode("','", $advanced_filter['filtro_dia_entrega']) . "')";
+            $query->andWhere($filtro_status);
+            $countQuery->andWhere($filtro_status);
+        }
+
         if ($search['value'] != '') {
 
             $filter_search = "c.razaoSocial LIKE '%" . $search['value'] . "%'";
@@ -65,7 +71,7 @@ class ClienteRepository extends ServiceEntityRepository
 
             switch($o['column']) {
                 case 0:
-                    $order_by = 'c.codigo';
+                    $order_by = 'c.id';
                     break;
                 case 1:
                     $order_by = 'c.razaoSocial';

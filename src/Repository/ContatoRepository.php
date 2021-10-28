@@ -72,9 +72,6 @@ class ContatoRepository extends ServiceEntityRepository
                 case 0:
                     $order_by = 'c.id';
                     break;
-                case 1:
-                    $order_by = 'c.codigo';
-                    break;
                 case 2:
                     $order_by = 'c.nome';
                     break;

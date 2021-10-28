@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cliente;
 use App\Entity\Estabelecimento;
 use App\Entity\NotaFiscal;
+use App\Enum\DiaEntrega;
 use App\Repository\ClienteRepository;
 use App\Repository\NotaFiscalRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +24,13 @@ class ClienteController extends BaseController
     public function __construct(ClienteRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function __advancedFilter()
+    {
+        return $this->render('cliente/_advanced_filter.html.twig', [
+            'diasEntrega' => DiaEntrega::$choices
+        ]);
     }
 
     /**
@@ -45,10 +53,11 @@ class ClienteController extends BaseController
         $search = $request->request->get('search');
         $order = $request->request->get('order');
         //$columns = $request->request->get('columns');
+        $advanced_filter['filtro_dia_entrega'] = $request->request->get('filtro_dia_entrega');
         
         $action_filter = null;
         
-        $results = $this->repository->listDataTable($start, $length, $order, $search, $action_filter);
+        $results = $this->repository->listDataTable($start, $length, $order, $search, $action_filter, $advanced_filter);
 
         foreach ($results["results"] as &$r) {
             $r['action_column'] = '<div class="btn-group">
@@ -91,7 +100,6 @@ class ClienteController extends BaseController
                 $ultimaNotaEstabelecimentos[] = $nota;
             }
         }
-        
 
         return $this->render('cliente/detail.html.twig', [
             "cliente" => $cliente,

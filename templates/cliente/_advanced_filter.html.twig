@@ -1,0 +1,9 @@
+<div class="row clearfix mb-2">
+    <div class="col-md-4">
+        <select class="form-control redraw-data-table multiselect" id="filtro_dia_entrega" name="filtro_dia_entrega" multiple="multiple" data-placeholder="Dia entrega">
+            {% for dia in diasEntrega %}
+                <option value="{{ dia }}">{{ dia }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

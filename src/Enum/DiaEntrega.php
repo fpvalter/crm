@@ -4,15 +4,15 @@ namespace App\Enum;
 
 final class DiaEntrega
 {
-    public const SEGUNDA = 2;
-    public const TERCA = 3;
-    public const QUARTA = 4;
-    public const QUINTA = 5;
-    public const SEXTA = 6;
-    public const SABADO = 7;
-    public const DOMINGO = 8;
+    public const SEGUNDA = 'SEGUNDA';
+    public const TERCA = 'TERCA';
+    public const QUARTA = 'QUARTA';
+    public const QUINTA = 'QUINTA';
+    public const SEXTA = 'SEXTA';
+    public const SABADO = 'SABADO';
+    public const DOMINGO = 'DOMINGO';
 
-    protected static $choices = [
+    public static $choices = [
         self::SEGUNDA => 'SEGUNDA',
         self::TERCA => 'TERCA',
         self::QUARTA => 'QUARTA',

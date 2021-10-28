@@ -6,6 +6,8 @@
 
     {{ parent() }}
 
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/multi-select/css/multi-select.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css') }}">
@@ -32,11 +34,16 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="body">
+                    
+                    {{ render(controller(
+                        'App\\Controller\\ClienteController::__advancedFilter'
+                    )) }}
+
                     <div class="table-responsive">
                         <table id="table_clientes" class="table table-hover dataTable">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Código</th>
+                                    <th>ID</th>
                                     <th>Nome</th>
                                     <th>CNPJ</th>
                                     <th>Cidade</th>
@@ -46,7 +53,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Código</th>
+                                    <th>ID</th>
                                     <th>Nome</th>
                                     <th>CNPJ</th>
                                     <th>Cidade</th>
@@ -65,6 +72,8 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script src="{{ asset('assets/vendor/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
+    <script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
     <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
 
     <script>
@@ -83,11 +92,11 @@
                     "url": '{{ path('cliente_list') }}',
                     "type": 'POST',
                     "data": (data) => {
-                        //data.some_filter = $("#some_filter").val()
+                        data.filtro_dia_entrega = $("#filtro_dia_entrega").val()
                     }
                 },
                 "columns": [
-                    { "data": "codigo" },
+                    { "data": "id" },
                     { "data": "razaoSocial" },
                     { "data": "cnpj" },
                     { "data": "cidade" },
@@ -101,6 +110,14 @@
                 ],
                 "order": [[1, 'asc']]
             } );
+
+            $('.multiselect').multiselect({
+                buttonClass: 'btn btn-light btn-sm'
+            });
+
+            $('.redraw-data-table').change(function(){
+                dataTable.draw();
+            });
 
         });
 
