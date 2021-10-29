@@ -130,11 +130,6 @@ class Cliente
     private $seguimento;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="clientes")
-     */
-    private $users;
-
-    /**
      * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="cliente", orphanRemoval=true)
      */
     private $followups;
@@ -168,15 +163,20 @@ class Cliente
     private $diaEntrega;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Vendedor::class, inversedBy="clientes")
      * @Groups({"clientePost"})
      */
-    private $tipoCompra;
+    private $vendedor;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     * @Groups({"clientePost"})
+     */
+    private $tipoCompra = [];
 
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
-        $this->users = new ArrayCollection();
         $this->followups = new ArrayCollection();
         $this->negocios = new ArrayCollection();
         $this->notaFiscals = new ArrayCollection();
@@ -396,30 +396,6 @@ class Cliente
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->users->removeElement($user);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Followup[]
      */
     public function getFollowups(): Collection
@@ -548,18 +524,32 @@ class Cliente
         $this->diaEntrega = $diaEntrega;
 
         return $this;
+    }    
+
+    public function getVendedor(): ?Vendedor
+    {
+        return $this->vendedor;
     }
 
-    public function getTipoCompra(): ?string
+    public function setVendedor(?Vendedor $vendedor): self
+    {
+        $this->vendedor = $vendedor;
+
+        return $this;
+    }
+
+    public function getTipoCompra(): ?array
     {
         return $this->tipoCompra;
     }
 
-    public function setTipoCompra(?string $tipoCompra): self
+    public function setTipoCompra(?array $tipoCompra): self
     {
 
-        if ($tipoCompra && !in_array($tipoCompra, ClienteTipoCompra::$choices)) {
-            throw new \InvalidArgumentException("Tipo compra invalido! [" . implode(",", ClienteTipoCompra::$choices) . "]");
+        foreach($tipoCompra as $tipo) {
+            if (!in_array($tipo, ClienteTipoCompra::$choices)) {
+                throw new \InvalidArgumentException("Tipo compra invalido! [" . implode(",", ClienteTipoCompra::$choices) . "]");
+            }
         }
 
         $this->tipoCompra = $tipoCompra;

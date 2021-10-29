@@ -99,11 +99,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $vendedor;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Cliente::class, mappedBy="users")
-     */
-    private $clientes;
-
-    /**
      * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="user")
      */
     private $followups;
@@ -111,7 +106,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->equipes = new ArrayCollection();
-        $this->clientes = new ArrayCollection();
         $this->followups = new ArrayCollection();
     }
 
@@ -383,33 +377,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVendedor(?Vendedor $vendedor): self
     {
         $this->vendedor = $vendedor;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Cliente[]
-     */
-    public function getClientes(): Collection
-    {
-        return $this->clientes;
-    }
-
-    public function addCliente(Cliente $cliente): self
-    {
-        if (!$this->clientes->contains($cliente)) {
-            $this->clientes[] = $cliente;
-            $cliente->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCliente(Cliente $cliente): self
-    {
-        if ($this->clientes->removeElement($cliente)) {
-            $cliente->removeUser($this);
-        }
 
         return $this;
     }

@@ -41,8 +41,15 @@
                                             <br>CEP: {{ cliente.cep }}
                                         </p>
                                         <p>
+                                            {% if cliente.vendedor %}
+                                                <span class="badge badge-success">Vendedor: {{ cliente.vendedor.nome }}</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">Sem vendedor</span>
+                                            {% endif %}
+                                        </p>
+                                        <p>
                                             <span class="badge badge-info">Dia entrega: {{ cliente.diaEntrega }}</span>
-                                            <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra }}</span>
+                                            <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra|join(' | ') }}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -56,22 +63,6 @@
                                     </div>
                                     <div class="col-4">
                                         {% if cliente.telefone3 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone3 }} {% endif %}
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p>
-                                            {% if cliente.users|length == 0 %}
-                                                Não há vendedor vinculado
-
-                                            {% else %}
-                                                Vendedores<br>
-                                                {% for user in cliente.users %}
-                                                    <br>{{ user.email }}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </p>
                                     </div>
                                 </div>
                                 
