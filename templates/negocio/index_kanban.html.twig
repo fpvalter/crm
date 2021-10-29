@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Home{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/nestable/jquery-nestable.css') }}"/>
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Negócios</h2>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="row clearfix taskboard">
+
+        {% for etapa in etapas %}
+            <div class="col-lg-3 col-md-12">
+                <div class="card planned_task">
+                    <div class="header">
+                        <h2>{{ etapa.descricao }}</h2>
+                        <ul class="header-dropdown">
+                            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div class="dd" data-plugin="nestable">
+                            <ol id="negocios_{{ etapa.id }}" class="dd-list">
+                                <li class="dd-item" data-id="2">
+                                    <div class="dd-handle">
+                                        <h6>New project</h6>
+                                        <p>It is a long established fact that a reader will be distracted.</p>
+                                    </div>
+                                </li>
+                                <li class="dd-item" data-id="3">
+                                    <div class="dd-handle">
+                                        <h6>Feed Details</h6>
+                                        <p>here are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        
+    </div>
+    
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('assets/vendor/nestable/jquery.nestable.min.js') }}"></script>
+
+    <script>
+
+    $(document).ready(function(){
+
+        //To full screen
+        $('.btn-toggle-fullwidth').click();
+
+        $('.dd').nestable({
+            callback: function(l,e){
+                // l is the main container
+                // e is the element that was moved
+            }
+        });
+
+    });
+
+    </script>
+
+{% endblock %}

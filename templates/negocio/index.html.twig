@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/multi-select/css/multi-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css') }}">
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Clientes</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item active">Clientes</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    
+                    {{ render(controller(
+                        'App\\Controller\\ClienteController::__advancedFilter'
+                    )) }}
+
+                    <div class="table-responsive">
+                        <table id="table_clientes" class="table table-hover dataTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>CNPJ</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>CNPJ</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/vendor/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
+    <script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            let dataTable = $('#table_clientes').DataTable( {
+                "responsive": true,
+                "language": {
+                    url: '{{ asset('assets/bundles/datatablesportuguese.json') }}'
+                },
+                "deferRender": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": '{{ path('cliente_list') }}',
+                    "type": 'POST',
+                    "data": (data) => {
+                        data.filtro_dia_entrega = $("#filtro_dia_entrega").val()
+                    }
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "razaoSocial" },
+                    { "data": "cnpj" },
+                    { "data": "cidade" },
+                    { "data": "uf" },
+                    {
+                        "data":           'action_column',
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": ''
+                    },
+                ],
+                "order": [[1, 'asc']]
+            } );
+
+            $('.multiselect').multiselect({
+                buttonClass: 'btn btn-light btn-sm'
+            });
+
+            $('.redraw-data-table').change(function(){
+                dataTable.draw();
+            });
+
+        });
+
+    </script>
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Cliente;
 use App\Entity\Empresa;
 use App\Entity\Equipe;
 use App\Entity\Estabelecimento;
+use App\Entity\NegocioEtapa;
 use App\Entity\Produto;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -39,7 +40,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Cliente', 'fas fa-building', Cliente::class),
                 MenuItem::linkToCrud('Equipe', 'fas fa-users', Equipe::class),
                 MenuItem::linkToCrud('Usuario', 'fas fa-user', User::class),
-                //MenuItem::linkToCrud('Empresa', 'fas fa-user', Empresa::class),
+                MenuItem::linkToCrud('Negocio Etapa', 'fas fa-angle-double-right', NegocioEtapa::class),
                 MenuItem::linkToCrud('Estabelecimento', 'fas fa-university', Estabelecimento::class),
                 //MenuItem::linkToCrud('Produto', 'fas fa-user', Produto::class)
             ])
