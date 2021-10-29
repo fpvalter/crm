@@ -34,7 +34,7 @@
                             <div class="col-8">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h4 class="m-t-0 m-b-0"><strong>{{ cliente.razaoSocial }}</strong></h4>
+                                        <h4 class="m-t-0 m-b-0"><strong>{{ cliente.razaoSocial }}</strong><a class="pl-3" href="{{ path('contato', {'cliente':cliente.id}) }}" title="Contatos"><i class="fa fa-fw fa-comments-o text-muted"></i> </a></h4>
                                         <span>{{ cliente.cnpj }}</span>
                                         <p class="m-t-15">
                                             {{ cliente.logradouro }}, {{ cliente.numero }}, {{ cliente.bairro }} - CIDADE-UF 

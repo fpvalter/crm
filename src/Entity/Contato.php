@@ -14,7 +14,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * 
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "patch"}
+ *     itemOperations={"get", "put", "patch"},
+ *     denormalizationContext={"groups"={"contatoPost"}}
  * )
  * @ApiFilter(
  *      SearchFilter::class, 
@@ -37,43 +38,43 @@ class Contato
     /**
      * @ORM\ManyToOne(targetEntity=Cliente::class, inversedBy="contatos", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $cliente;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $nome;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $dataNascimento;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $telefone;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $observacao;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "contatoPost"})
      */
     private $codigo;
 
