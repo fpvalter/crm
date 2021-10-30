@@ -3,12 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Cliente;
-use App\Entity\Empresa;
 use App\Entity\Equipe;
 use App\Entity\Estabelecimento;
 use App\Entity\NegocioEtapa;
-use App\Entity\Produto;
 use App\Entity\User;
+use App\Entity\Vendedor;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -22,7 +22,7 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        return parent::index();
+        return $this->render('admin/index.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -31,10 +31,18 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Admin');
     }
 
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            ->setDateFormat('dd/MM/yyyy')
+            ->setDateTimeFormat('dd/MM/yyyy HH:mm:ss')
+            ->setTimeFormat('HH:mm');
+    }
+
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::linkToRoute('CRM Home', 'fa fa-home', 'crm_index'),
+            MenuItem::linkToUrl('CRM Home', 'fa fa-home', '/crm'),
             
             MenuItem::subMenu('Cadastros', 'fa fa-database')->setSubItems([
                 MenuItem::linkToCrud('Cliente', 'fas fa-building', Cliente::class),
@@ -42,7 +50,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Usuario', 'fas fa-user', User::class),
                 MenuItem::linkToCrud('Negocio Etapa', 'fas fa-angle-double-right', NegocioEtapa::class),
                 MenuItem::linkToCrud('Estabelecimento', 'fas fa-university', Estabelecimento::class),
-                //MenuItem::linkToCrud('Produto', 'fas fa-user', Produto::class)
+                MenuItem::linkToCrud('Vendedor', 'fas fa-user', Vendedor::class)
             ])
 
         ];
