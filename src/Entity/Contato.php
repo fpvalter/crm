@@ -73,7 +73,7 @@ class Contato
     private $observacao;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      * @Groups({"clientePost", "contatoPost"})
      */
     private $codigo;

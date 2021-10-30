@@ -35,7 +35,7 @@ class Produto
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      * @Groups({"produtoPost"})
      */
     private $codigo;
