@@ -58,17 +58,17 @@ class ClienteCrudController extends AbstractCrudController
         $codigo = TextField::new('codigo');
         $razaoSocial = TextField::new('razaoSocial');
         $cnpj = TextField::new('cnpj');
-        $users = AssociationField::new('users');
+        $vendedor = AssociationField::new('vendedor');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $razaoSocial, $cnpj, $users];
+            return [$id, $razaoSocial, $cnpj, $vendedor];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $razaoSocial, $cnpj, $users];
+            return [$id, $razaoSocial, $cnpj, $vendedor];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$codigo, $razaoSocial, $cnpj, $users];
+            return [$codigo, $razaoSocial, $cnpj, $vendedor];
         } elseif (Crud::PAGE_EDIT === $pageName) {
 
-            return [$codigo, $razaoSocial, $cnpj, $users];
+            return [$codigo, $razaoSocial, $cnpj, $vendedor];
         }
     }
 }

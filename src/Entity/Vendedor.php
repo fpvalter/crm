@@ -43,6 +43,11 @@ class Vendedor
         $this->clientes = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->codigo . " - " . $this->nome;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

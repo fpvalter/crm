@@ -76,7 +76,7 @@ class UserCrudController extends AbstractCrudController
         $telefone = TextField::new('telefone');
         $email = EmailField::new('email');
         $equipes = AssociationField::new('equipes');
-        $clientes = AssociationField::new('clientes');
+        $vendedor = AssociationField::new('vendedor');
 
         $enabled = BooleanField::new('enabled');
 
@@ -92,19 +92,19 @@ class UserCrudController extends AbstractCrudController
         $password = TextField::new('plainPassword')->setLabel('Senha')->setFormType(PasswordType::class);
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $email, $nome, $equipes, $enabled, $clientes, $equipes, $lastLogin];
+            return [$id, $email, $nome, $vendedor, $equipes, $enabled, $equipes, $lastLogin];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$email, $enabled, $id, $nome, $telefone, $clientes, $equipes, $lastLogin];
+            return [$email, $enabled, $id, $nome, $telefone, $vendedor, $equipes, $lastLogin];
         } elseif (Crud::PAGE_NEW === $pageName) {
 
             $password->setRequired(true);
             $enabled->setFormTypeOptions(['data' => true]);
             $roles->setFormTypeOptions(['data' => ['ROLE_USER'] ]);
 
-            return [$codigo, $email, $password, $nome, $telefone, $roles, $equipes, $clientes, $enabled];
+            return [$codigo, $email, $password, $nome, $telefone, $vendedor, $roles, $equipes, $enabled];
         } elseif (Crud::PAGE_EDIT === $pageName) {
 
-            return [$codigo, $email, $password,  $nome, $telefone, $roles, $equipes, $clientes, $enabled];
+            return [$codigo, $email, $password,  $nome, $telefone, $vendedor, $roles, $equipes, $enabled];
         }
     }
 }

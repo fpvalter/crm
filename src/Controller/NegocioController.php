@@ -21,9 +21,9 @@ class NegocioController extends AbstractController
     }
 
     /**
-     * @Route("/kanban/{diaEntrega}/{vendedor}", name="negocio_kanban")
+     * @Route("/kanban", name="negocio_kanban")
      */
-    public function indexKanban(string $diaEntrega = null, int $vendedor = null): Response
+    public function indexKanban(): Response
     {
 
         $negocioEtapaRepo = $this->getDoctrine()->getRepository(NegocioEtapa::class);

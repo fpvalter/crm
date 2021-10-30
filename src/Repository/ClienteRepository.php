@@ -54,6 +54,11 @@ class ClienteRepository extends ServiceEntityRepository
             $query->andWhere($filtro_status);
             $countQuery->andWhere($filtro_status);
         }
+        if ($advanced_filter['filtro_vendedor'] != '') {
+            $filtro_vendedor = "c.vendedor = " . $advanced_filter['filtro_vendedor'];
+            $query->andWhere($filtro_vendedor);
+            $countQuery->andWhere($filtro_vendedor);
+        }
 
         if ($search['value'] != '') {
 
@@ -88,7 +93,7 @@ class ClienteRepository extends ServiceEntityRepository
             }
 
         }
-
+        
         // Execute
         $results = $query->getQuery()->getArrayResult();
         $countResult = $countQuery->getQuery()->getSingleScalarResult();

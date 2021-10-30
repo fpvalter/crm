@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cliente;
 use App\Entity\Estabelecimento;
 use App\Entity\NotaFiscal;
+use App\Entity\Vendedor;
 use App\Enum\DiaEntrega;
 use App\Repository\ClienteRepository;
 use App\Repository\NotaFiscalRepository;
@@ -28,8 +29,13 @@ class ClienteController extends BaseController
 
     public function __advancedFilter()
     {
+
+        $vendedorRepo = $this->getDoctrine()->getRepository(Vendedor::class);
+        $vendedores = $vendedorRepo->findBy([], ["nome" => "ASC"]);
+
         return $this->render('cliente/_advanced_filter.html.twig', [
-            'diasEntrega' => DiaEntrega::$choices
+            'diasEntrega' => DiaEntrega::$choices,
+            'vendedores' => $vendedores
         ]);
     }
 
@@ -54,6 +60,7 @@ class ClienteController extends BaseController
         $order = $request->request->get('order');
         //$columns = $request->request->get('columns');
         $advanced_filter['filtro_dia_entrega'] = $request->request->get('filtro_dia_entrega');
+        $advanced_filter['filtro_vendedor'] = $request->request->get('filtro_vendedor');        
         
         $action_filter = null;
         
