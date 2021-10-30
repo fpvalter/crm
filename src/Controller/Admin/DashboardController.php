@@ -42,7 +42,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::linkToUrl('CRM Home', 'fa fa-home', '/crm'),
+            MenuItem::linkToUrl('CRM Home', 'fa fa-home', $this->generateUrl('crm_index')),
             
             MenuItem::subMenu('Cadastros', 'fa fa-database')->setSubItems([
                 MenuItem::linkToCrud('Cliente', 'fas fa-building', Cliente::class),
