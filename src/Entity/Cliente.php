@@ -20,7 +20,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ApiResource(
  *     collectionOperations={"get", "post"},
  *     itemOperations={"get", "put", "patch"},
- *     denormalizationContext={"groups"={"clientePost"}}
+ *     denormalizationContext={"groups"={"clientePost"}},
+ *     normalizationContext={"groups"={"clienteGet"}}
  * )
  * @ApiFilter(
  *      SearchFilter::class, 
@@ -36,91 +37,91 @@ class Cliente
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"notaFiscalPost", "contatoPost"})
+     * @Groups({"notaFiscalPost", "contatoPost", "clienteGet"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=14, unique=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $cnpj;
 
     /**
     * @ORM\Column(type="string", length=255)
-    * @Groups({"clientePost"})
+    * @Groups({"clientePost", "clienteGet"})
     */
     private $razaoSocial;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $logradouro;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $bairro;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $cep;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $telefone1;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $telefone2;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $telefone3;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $observacao;
 
     /**
      * @ORM\OneToOne(targetEntity=ClienteInfo::class, mappedBy="cliente", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $clienteInfo;
 
     /**
      * @ORM\OneToMany(targetEntity=Contato::class, mappedBy="cliente", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $contatos;
 
@@ -158,19 +159,19 @@ class Cliente
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $diaEntrega;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vendedor::class, inversedBy="clientes")
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $vendedor;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $tipoCompra = [];
 

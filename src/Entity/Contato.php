@@ -32,6 +32,7 @@ class Contato
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clienteGet"})
      */
     private $id;
 
@@ -44,37 +45,37 @@ class Contato
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $nome;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $dataNascimento;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $telefone;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $observacao;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     * @Groups({"clientePost", "contatoPost"})
+     * @Groups({"clientePost", "contatoPost", "clienteGet"})
      */
     private $codigo;
 

@@ -29,18 +29,19 @@ class ClienteInfo
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clienteGet"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $credito;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $creditoValidade;
 
@@ -53,25 +54,25 @@ class ClienteInfo
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $diasUltimaCompra;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $r;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $f;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $v;
 
