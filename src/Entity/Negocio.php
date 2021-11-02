@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\NegocioStatus;
 use App\Repository\NegocioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -52,6 +53,11 @@ class Negocio
      * @ORM\OneToMany(targetEntity=Followup::class, mappedBy="negocio")
      */
     private $followups;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $status;
 
     public function __construct()
     {
@@ -149,6 +155,23 @@ class Negocio
                 $followup->setNegocio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+
+        if ($status && !in_array($status, NegocioStatus::$choices)) {
+            throw new \InvalidArgumentException("Status inválido! [" . implode(",", NegocioStatus::$choices) . "]");
+        }
+
+        $this->status = $status;
 
         return $this;
     }

@@ -1,0 +1,10 @@
+{% for negocio in negocios %}
+    <li class="dd-item" data-id="{{ negocio.id }}">
+        <div class="dd-handle">
+            <h6>{{ negocio.titulo }} <small>| {{ negocio.createdAt|date('d/m/Y') }}</small></h6>
+            <p>
+                <strong>Cliente:</strong> {{ negocio.cliente.razaoSocial }}
+            </p>
+        </div>
+    </li>
+{% endfor %}

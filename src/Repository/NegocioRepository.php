@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Negocio;
+use App\Enum\NegocioStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,24 @@ class NegocioRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Negocio::class);
+    }
+
+    public function findByEtapaVendedorDiaEntrega($etapaId, $vendedorId, $diasEntrega)
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.cliente', 'c')
+            ->andWhere('n.status = :status')
+            ->andWhere('n.negocioEtapa = :etapa_id')
+            ->andWhere('c.vendedor = :vendedor_id')
+            ->andWhere('c.diaEntrega IN (:dia_entrega)')
+            ->setParameter('status', NegocioStatus::ABERTO)
+            ->setParameter('etapa_id', $etapaId)
+            ->setParameter('vendedor_id', $vendedorId)
+            ->setParameter('dia_entrega', implode("','", $diasEntrega) )
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
     }
 
     // /**
