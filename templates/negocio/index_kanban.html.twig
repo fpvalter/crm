@@ -7,9 +7,47 @@
     {{ parent() }}
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/nestable/jquery-nestable.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/multi-select/css/multi-select.css') }}">
 
+    <style>
+        .dd-empty {
+            background: #FFFFFF;
+            border: 0;
+        }
+        .etapas-container > .row {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            flex-wrap: nowrap;
+
+        }
+        .etapas-container > .row > .col-lg-3  {
+            display: inline-block;
+        }
+        .etapas-container > .row > .col-md-6  {
+            display: inline-block;
+        }
+
+         /* width */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
 {% endblock %}
 
 {% block body_header %}
@@ -27,33 +65,35 @@
     <div class="row clearfix">
         <div class="col-lg-6">
             {{ render(controller(
-                'App\\Controller\\ClienteController::__advancedFilter'
+                'App\\Controller\\NegocioController::__advancedFilter'
             )) }}
         </div>
     </div>
 
-    <div class="row clearfix taskboard">
 
-        {% for etapa in etapas %}
-            <div class="col-lg-3 col-md-6">
-                <div class="card planned_task">
-                    <div class="header">
-                        <h2>{{ etapa.descricao }}</h2>
-                        <ul class="header-dropdown">
-                            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="dd" data-plugin="nestable">
-                            <ol name="etapa_negocios_{{ etapa.id }}" id="etapa_negocios_{{ etapa.id }}" data-id="{{ etapa.id }}" class="dd-list">
-                                
-                            </ol>
+    <!--<div class="etapas-container"> -->
+
+        <div class="row clearfix taskboard">
+            
+            {% for etapa in etapas %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card planned_task">
+                        <div class="header">
+                            <h2>{{ etapa.descricao }}</h2>
+                            <ul class="header-dropdown">
+                                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#addcontact"><i class="icon-plus"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="dd" data-plugin="nestable" name="etapa_negocios_{{ etapa.id }}" id="etapa_negocios_{{ etapa.id }}" data-id="{{ etapa.id }}">
+                                <ol class="dd-list"></ol><div class="dd-empty"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         
+        <!-- </div> -->
     </div>
     
 
@@ -65,8 +105,6 @@
     {{ parent() }}
 
     <script src="{{ asset('assets/vendor/nestable/jquery.nestable.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
-    <script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
 
     <script>
 
@@ -83,17 +121,20 @@
         //To full screen
         $('.btn-toggle-fullwidth').click();
 
-        $('.multiselect').multiselect({
-            buttonClass: 'btn btn-default btn-sm'
-        });
-
         $('.dd').nestable({
-            callback: function(l,e){
+            beforeDragStop: function(l,e, p){
                 // l is the main container
                 // e is the element that was moved
+                // p is the place where element was moved.
+
+            
+                let idNegocio = $(e).data("id");
+                let idEtapaNova = $(p).parent().data("id");
+
+                changeEtapa(idNegocio, idEtapaNova);
+                
             }
         });
-
 
         findNegocios();
 
@@ -104,12 +145,11 @@
     });
 
     function findNegocios() {
-        $("ol[name^=etapa_negocios_]").each(function() {
+        $("div[name^=etapa_negocios_]").each(function() {
             let uiId = this.id;
             let idEtapa = $(this).data("id"); 
             
             $(this).html("");
-            $(this).closest('.dd').find('.dd-empty').remove();
 
             getNegocios(idEtapa, uiId);
 
@@ -127,11 +167,28 @@
                 if(data != "") {
                     
                     $("#" + uiId).html(data);
-                    $("#" + uiId).closest('.dd').find('.dd-empty').remove();
+                    $("#" + uiId).find('.dd-empty').remove();
 
                 } else {
-                    $("#" + uiId).closest('.dd').append('<div class="dd-empty"></div>');
+                    $("#" + uiId).html('<ol class="dd-list"></ol><div class="dd-empty"></div>');
                 }
+                
+            }
+        );
+    }
+
+    function changeEtapa(idNegocio, idEtapa) {
+        $.post("{{ path('negocio_change_etapa') }}",
+            {
+                negocio: idNegocio,
+                etapa: idEtapa
+            }, 
+            function(data) {
+                if(!data.success) {
+                    
+                  
+                } 
+                
             }
         );
     }

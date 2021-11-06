@@ -1,0 +1,18 @@
+<div class="row clearfix mb-4">
+    <div class="col-lg-3 col-sm-12">
+        <select class="form-control redraw-data-table" id="filtro_vendedor" name="filtro_vendedor">
+            <option value="">Qualquer vendedor</option>
+            {% for vendedor in vendedores %}
+                <option value="{{ vendedor.id }}">{{ vendedor.nome }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-lg-3 col-sm-12">
+        <select class="form-control redraw-data-table" id="filtro_dia_entrega" name="filtro_dia_entrega">
+            <option value="">Dia entrega</option>
+            {% for dia in diasEntrega %}
+                <option value="{{ dia }}">{{ dia }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
