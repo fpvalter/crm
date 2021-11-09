@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Cliente;
 use App\Entity\Negocio;
 use App\Entity\NegocioEtapa;
 use App\Entity\Vendedor;
 use App\Enum\DiaEntrega;
+use App\Enum\NegocioStatus;
+use App\Form\NegocioClienteType;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,6 +53,42 @@ class NegocioController extends AbstractController
 
         return $this->render('negocio/index_kanban.html.twig', [
             'etapas' => $etapas
+        ]);
+    }
+
+    /**
+     * @Route("/{cliente}/new", name="negocio_new_cliente")
+     */
+    public function newCliente(Request $request, Cliente $cliente): Response
+    {
+        $negocio = new Negocio();
+        $negocio->setCliente($cliente);
+        $negocio->setStatus(NegocioStatus::ABERTO);
+        
+        $etapaRepo = $this->getDoctrine()->getRepository(NegocioEtapa::class);
+        $etapa = $etapaRepo->findOneBy([], ['ordem' => 'ASC']);
+        $negocio->setNegocioEtapa($etapa);
+
+        $form = $this->createForm(NegocioClienteType::class, $negocio);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($negocio);
+            $em->flush();
+
+            $this->addFlash('info', 'Negócio adicionado com sucesso');
+
+            return $this->redirectToRoute('negocio_kanban');
+
+        }
+
+        return $this->renderForm('negocio/new.html.twig', [
+            'form' => $form,
+            'cliente' => $cliente
         ]);
     }
 

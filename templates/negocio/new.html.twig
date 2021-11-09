@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Novo negocio {{ cliente.razaoSocial }}{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Novo negocio <small>| {{ cliente.razaoSocial }}</small></h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item"><a href="{{ path('cliente') }}">Clientes</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('cliente_detail', { 'cliente' : cliente.id }) }}">{{ cliente.razaoSocial }}</a></li>
+                <li class="breadcrumb-item active">Novo Negócio</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    
+                    {{ include('negocio/_form.html.twig') }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    {{ parent() }}
+
+    <script>
+    
+        $(document).ready(function(){
+
+            
+
+        });
+
+    </script>
+{% endblock %}
