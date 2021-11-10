@@ -76,7 +76,7 @@ class ClienteController extends BaseController
                                             <a class="dropdown-item" href="' . $this->generateUrl('contato', ['cliente' => $r['id']]) . '"><i class="fa fa-fw fa-comments-o"></i> Contatos</a>
 
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="' . $this->generateUrl('negocio_new_cliente', ['cliente' => $r['id']]) . '"><i class="fa fa-fw icon-plus"></i> Novo Negocio</a>
+                                            <a class="dropdown-item" href="' . $this->generateUrl('negocio_new_cliente', ['cliente' => $r['id']]) . '"><i class="fa fa-fw icon-like"></i> Novo Negocio</a>
                                         </div>
                                     </div>
                                 ';
