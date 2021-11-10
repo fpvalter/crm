@@ -19,16 +19,19 @@ class Seguimento
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     * @Groups({"clienteGet"})
      */
     private $codigo;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"clienteGet"})
      */
     private $descricao;
 

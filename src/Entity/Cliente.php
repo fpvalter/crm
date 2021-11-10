@@ -127,6 +127,7 @@ class Cliente
 
     /**
      * @ORM\ManyToOne(targetEntity=Seguimento::class, inversedBy="clientes")
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $seguimento;
 
