@@ -39,6 +39,28 @@ class ClienteController extends BaseController
         ]);
     }
 
+    public function __header(Cliente $cliente)
+    {
+        
+        $ultimaNotaEstabelecimentos = [];
+
+        $notaFiscalRepo = $this->getDoctrine()->getRepository(NotaFiscal::class);
+
+        $estabelecimentoRepo = $this->getDoctrine()->getRepository(Estabelecimento::class);
+        $estabelecimentos = $estabelecimentoRepo->findAll();
+        foreach($estabelecimentos as $estab) {
+            $nota = $notaFiscalRepo->findLastNotaFiscalByClienteEstabelecimento($cliente->getId(), $estab->getId());
+            if($nota) {
+                $ultimaNotaEstabelecimentos[] = $nota;
+            }
+        }
+
+        return $this->render('cliente/_header.html.twig', [
+            "cliente" => $cliente,
+            "ultimaNotaEstabelecimentos" => $ultimaNotaEstabelecimentos
+        ]);
+    }
+
     /**
      * @Route("/", name="cliente")
      */
@@ -96,7 +118,7 @@ class ClienteController extends BaseController
     /**
      * @Route("/{cliente}/detail", name="cliente_detail")
      */
-    public function show(Request $request, Cliente $cliente): Response
+    public function detail(Request $request, Cliente $cliente): Response
     {
 
         $ultimaNotaEstabelecimentos = [];

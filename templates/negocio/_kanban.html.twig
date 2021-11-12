@@ -3,7 +3,10 @@
         {% for negocio in negocios %}
             <li class="dd-item" data-id="{{ negocio.id }}">
                 <div class="dd-handle">
-                    <h6>{{ negocio.titulo }} <small>| {{ negocio.createdAt|date('d/m/Y') }}</small></h6>
+                    <h6>
+                        {{ negocio.titulo }} <small>| {{ negocio.createdAt|date('d/m/Y') }}</small>
+                        <a class="pull-right dd-nodrag" href="{{ path('negocio_detail', {'negocio': negocio.id}) }}"><i class="fa fa-lg fa-info-circle"></i></a>
+                    </h6>
                     <p>
                         <strong>Cliente:</strong> {{ negocio.cliente.razaoSocial }}
                     </p>

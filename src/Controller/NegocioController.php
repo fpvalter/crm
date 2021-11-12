@@ -7,6 +7,7 @@ use App\Entity\Negocio;
 use App\Entity\NegocioEtapa;
 use App\Entity\Vendedor;
 use App\Enum\DiaEntrega;
+use App\Enum\FollowupTipo;
 use App\Enum\NegocioStatus;
 use App\Form\NegocioClienteType;
 use Exception;
@@ -74,13 +75,25 @@ class NegocioController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
-
             $em = $this->getDoctrine()->getManager();
-            $em->persist($negocio);
-            $em->flush();
 
-            $this->addFlash('info', 'Negócio adicionado com sucesso');
+            $em->getConnection()->beginTransaction();
+
+            try {
+                $em->persist($negocio);
+                $em->flush();
+
+                FollowupController::add($em, $this->getUser(), $negocio, "Negócio adicionado", FollowupTipo::INFO);
+
+                $em->getConnection()->commit();
+
+                $this->addFlash('info', 'Negócio adicionado com sucesso');
+
+
+            } catch(Exception $ex) {
+                $em->getConnection()->rollBack();
+                $this->addFlash('danger', 'Erro ao adicionar negocio.' . PHP_EOL . $ex->getMessage());
+            }
 
             return $this->redirectToRoute('negocio_kanban');
 
@@ -89,6 +102,16 @@ class NegocioController extends AbstractController
         return $this->renderForm('negocio/new.html.twig', [
             'form' => $form,
             'cliente' => $cliente
+        ]);
+    }
+
+    /**
+     * @Route("/{negocio}/detail", name="negocio_detail")
+     */
+    public function detail(Request $request, Negocio $negocio): Response
+    {
+        return $this->render('negocio/detail.html.twig', [
+            "negocio" => $negocio
         ]);
     }
 
@@ -118,6 +141,8 @@ class NegocioController extends AbstractController
         $success = true;
         $msg = "";
 
+        $em = $this->getDoctrine()->getManager();   
+        $em->getConnection()->beginTransaction();     
         try {
 
             $idNegocio = $request->request->get('negocio');
@@ -130,12 +155,18 @@ class NegocioController extends AbstractController
             }
 
             $negocio->setNegocioEtapa($etapa);
-            $em = $this->getDoctrine()->getManager();
+
             $em->persist($negocio);
             $em->flush();
 
+            FollowupController::add($em, $this->getUser(), $negocio, "Negocio #" . $negocio->getId() . " - Etapa alterada para " . $etapa->getDescricao(), FollowupTipo::INFO);
+            $em->getConnection()->commit();
+
             $success = true;
         } catch(\Exception $ex) {
+
+            $em->getConnection()->rollBack();
+
             $success = true;
             $msg = "Não foi possível mudar o Negocio para outra etapa. " . $ex->getMessage();
         }

@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Negocio #{{ negocio.id }} :: {{ negocio.cliente.razaoSocial }} {% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Negocio detalhe</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Movimentações</li>
+                <li class="breadcrumb-item"><a href="{{ path('negocio_kanban') }}">Negocios</a></li>
+                <li class="breadcrumb-item active">Detalhe</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card client-detail">
+                <div class="body">
+                    <h4 class="m-t-0 m-b-0">
+                        <strong>Negócio #{{ negocio.id }}</strong> <small>| {{ negocio.createdAt|date('d/m/Y') }}</small> 
+                        <span class="badge badge-info">{{ negocio.status }}</span>    
+                    </h4>
+                    <p class="m-t-15">
+                        {{ negocio.titulo }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-lg-9 col-md-9">
+            <div class="card client-detail">
+                <div class="body">
+                
+                    {{ render(controller(
+                        'App\\Controller\\ClienteController::__header',
+                        { 
+                            'cliente': negocio.cliente.id 
+                        }
+
+                    )) }}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Followup</h2>
+                </div>
+                <div class="body">
+                    <form method="post" action="{{ path('followup_new') }}">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea name="descricao_followup" required="required" class="form-control" rows="5" placeholder="Descrição"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">   
+                                <div class="m-t-15 pull-right">
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="negocio_id" value="{{ negocio.id }}" />
+                        <input type="hidden" name="token" value="{{ csrf_token('add_followup') }}" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div id="div_followups" class="body">
+                    <input type="hidden" id="followups_page" value="0">
+                </div>
+                <div class="footer text-center p-2">
+                    <button id="btn-carregar-mais" class="btn btn-sm btn-info" title="Carregar mais">Carregar mais</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+
+    <script>
+    
+        $(document).ready(function(){
+
+            getFollowups();
+
+            $("#btn-carregar-mais").click(()=>{
+                getFollowups();
+            });
+        });
+
+        function getFollowups() {
+            let page = parseInt( $("#followups_page").val() );
+
+            $.post("{{ path('followup_get_by_cliente') }}",
+                {
+                    cliente_id: {{ negocio.cliente.id }},
+                    page: page
+                }, 
+                function(data) {
+                    if(data != "") {
+                        $("#div_followups").append(data);
+                        
+                        page++;
+                        $("#followups_page").val(page);
+                    } else {
+                        $("#btn-carregar-mais").attr("disabled", "disabled").html("Não há mais registros");
+                    }
+                }
+            );
+        }
+
+    </script>
+{% endblock %}
