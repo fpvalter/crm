@@ -21,6 +21,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      SearchFilter::class, 
  *      properties={
  *          "codigo" : "exact",
+ *          "cliente.id" : "exact",
  *          "cliente.cnpj" : "exact",
  *          "cliente.codigo" : "exact"
  *      }

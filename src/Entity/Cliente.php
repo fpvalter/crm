@@ -37,7 +37,7 @@ class Cliente
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"notaFiscalPost", "contatoPost", "clienteGet"})
+     * @Groups({"notaFiscalPost", "contatoPost", "clienteGet", "clienteInfoPost"})
      */
     private $id;
 

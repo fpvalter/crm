@@ -13,11 +13,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Entity(repositoryClass=ClienteInfoRepository::class)
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "patch"}
+ *     itemOperations={"get", "put", "patch"},
+ *     denormalizationContext={"groups"={"clienteInfoPost"}}
  * )
  * @ApiFilter(
  *      SearchFilter::class, 
  *      properties={
+ *          "cliente.id": "exact",
  *          "cliente.codigo": "exact",
  *          "cliente.cnpj": "exact"
  *      }
@@ -35,44 +37,44 @@ class ClienteInfo
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $credito;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $creditoValidade;
 
     /**
      * @ORM\OneToOne(targetEntity=Cliente::class, inversedBy="clienteInfo", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"clientePost"})
+     * @Groups({"clientePost", "clienteInfoPost"})
      */
     private $cliente;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $diasUltimaCompra;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $r;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $f;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
+     * @Groups({"clientePost", "clienteGet", "clienteInfoPost"})
      */
     private $v;
 
