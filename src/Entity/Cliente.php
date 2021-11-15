@@ -12,6 +12,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Enum\ClienteTipoCompra;
 use App\Enum\DiaEntrega;
+use App\Enum\TipoPessoa;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -175,6 +176,42 @@ class Cliente
      * @Groups({"clientePost", "clienteGet"})
      */
     private $tipoCompra = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $nomeFantasia;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $complemento;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $site;
+
+    /**
+     * @ORM\Column(type="string", length=1, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $tipoPessoa;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $emailNfe;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $emailFinanceiro;
 
     public function __construct()
     {
@@ -555,6 +592,83 @@ class Cliente
         }
 
         $this->tipoCompra = $tipoCompra;
+
+        return $this;
+    }
+
+    public function getNomeFantasia(): ?string
+    {
+        return $this->nomeFantasia;
+    }
+
+    public function setNomeFantasia(?string $nomeFantasia): self
+    {
+        $this->nomeFantasia = $nomeFantasia;
+
+        return $this;
+    }
+
+    public function getComplemento(): ?string
+    {
+        return $this->complemento;
+    }
+
+    public function setComplemento(?string $complemento): self
+    {
+        $this->complemento = $complemento;
+
+        return $this;
+    }
+
+    public function getSite(): ?string
+    {
+        return $this->site;
+    }
+
+    public function setSite(?string $site): self
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    public function getTipoPessoa(): ?string
+    {
+        return $this->tipoPessoa;
+    }
+
+    public function setTipoPessoa(?string $tipoPessoa): self
+    {
+
+        if ($tipoPessoa && !in_array($tipoPessoa, TipoPessoa::$choices)) {
+            throw new \InvalidArgumentException("Tipo Pessoa Inválido! [" . implode(",", TipoPessoa::$choices) . "]");
+        }
+
+        $this->tipoPessoa = $tipoPessoa;
+
+        return $this;
+    }
+
+    public function getEmailNfe(): ?string
+    {
+        return $this->emailNfe;
+    }
+
+    public function setEmailNfe(?string $emailNfe): self
+    {
+        $this->emailNfe = $emailNfe;
+
+        return $this;
+    }
+
+    public function getEmailFinanceiro(): ?string
+    {
+        return $this->emailFinanceiro;
+    }
+
+    public function setEmailFinanceiro(?string $emailFinanceiro): self
+    {
+        $this->emailFinanceiro = $emailFinanceiro;
 
         return $this;
     }
