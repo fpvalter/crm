@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/cliente/contato")
  */
-class ContatoController extends AbstractController
+class ContatoController extends BaseController
 {
 
     private ContatoRepository $repository;

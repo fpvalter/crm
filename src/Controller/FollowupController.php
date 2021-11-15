@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @Route("/followup")
  */
-class FollowupController extends AbstractController
+class FollowupController extends BaseController
 {
 
     private FollowupRepository $repository;

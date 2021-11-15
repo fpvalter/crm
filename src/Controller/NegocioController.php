@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/negocio")
  */
-class NegocioController extends AbstractController
+class NegocioController extends BaseController
 {
 
     public function __advancedFilter()

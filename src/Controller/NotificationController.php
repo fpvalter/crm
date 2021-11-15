@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/notification")
  */
-class NotificationController extends AbstractController
+class NotificationController extends BaseController
 {
     /**
      * @Route("/get-notification", name="notification_get", methods="POST")
