@@ -1,6 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        wrapper_class: App\DBAL\ConnectionWrapper
         server_version: '8.0'
         charset: utf8mb4
         default_table_options:
