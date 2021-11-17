@@ -20,7 +20,7 @@ class VendedorCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Vendedores')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Vendedor')
             ->setSearchFields(['nome'])
             ->setDefaultSort(['nome' => 'ASC'])
             ->setPaginatorPageSize(30);

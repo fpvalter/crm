@@ -28,7 +28,7 @@ class ClienteCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Usuário')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Cliente')
             ->setSearchFields(['razaoSocial', 'cnpj'])
             ->setDefaultSort(['razaoSocial' => 'ASC'])
             ->setPaginatorPageSize(30);
