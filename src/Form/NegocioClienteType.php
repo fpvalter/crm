@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Contato;
 use App\Entity\Negocio;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +17,16 @@ class NegocioClienteType extends AbstractType
     {
         $builder
             ->add('titulo')
+            ->add('contato', EntityType::class, [
+                'class' => Contato::class,
+                'placeholder' => 'Selecione',
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    return $er->createQueryBuilder('c')
+                        ->andWhere('c.cliente=:cliente_id')
+                        ->setParameter('cliente_id', $options['cliente_id'])
+                        ->orderBy('c.nome', 'ASC');
+                }
+            ])
         ;
     }
 
@@ -21,6 +34,7 @@ class NegocioClienteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Negocio::class,
+            'cliente_id' => null
         ]);
     }
 }

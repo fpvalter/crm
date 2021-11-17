@@ -73,7 +73,7 @@ class NegocioController extends BaseController
         $etapa = $etapaRepo->findOneBy([], ['ordem' => 'ASC']);
         $negocio->setNegocioEtapa($etapa);
 
-        $form = $this->createForm(NegocioClienteType::class, $negocio);
+        $form = $this->createForm(NegocioClienteType::class, $negocio, ['cliente_id' => $cliente->getId()]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

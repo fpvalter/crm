@@ -80,6 +80,11 @@ class Contato
      */
     private $codigo;
 
+    public function __toString()
+    {
+        return $this->nome;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

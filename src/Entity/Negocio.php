@@ -59,6 +59,12 @@ class Negocio
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Contato::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $contato;
+
     public function __construct()
     {
         $this->followups = new ArrayCollection();
@@ -172,6 +178,18 @@ class Negocio
         }
 
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getContato(): ?Contato
+    {
+        return $this->contato;
+    }
+
+    public function setContato(?Contato $contato): self
+    {
+        $this->contato = $contato;
 
         return $this;
     }
