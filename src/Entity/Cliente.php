@@ -207,7 +207,7 @@ class Cliente
     private $emailFinanceiro;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Cidade::class)
+     * @ORM\ManyToOne(targetEntity=Cidade::class, inversedBy="clientes")
      * @Groups({"clientePost", "clienteGet"})
      */
     private $cidade;

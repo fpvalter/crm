@@ -13,7 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ApiResource(
  *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "patch"}
+ *     itemOperations={"get", "put", "patch"},
+ *     denormalizationContext={"groups"={"transportadoraPost"}},
+ *     normalizationContext={"groups"={"transportadoraGet"}}
  * )
  * @ApiFilter(
  *      SearchFilter::class, 
@@ -35,13 +37,13 @@ class Transportadora
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"clienteGet"})
+     * @Groups({"clienteGet", "transportadoraPost", "transportadoraGet"})
      */
     private $razaoSocial;
 
     /**
      * @ORM\Column(type="string", length=14, nullable=true)
-     * @Groups({"clienteGet"})
+     * @Groups({"clienteGet", "transportadoraPost", "transportadoraGet"})
      */
     private $cnpj;
 
@@ -59,9 +61,15 @@ class Transportadora
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"clienteGet"})
+     * @Groups({"clienteGet", "transportadoraPost", "transportadoraGet"})
      */
     private $codigo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Cidade::class, inversedBy="transportadoras")
+     * @Groups({"transportadoraPost", "transportadoraGet", "clienteGet"})
+     */
+    private $cidade;
 
     public function getId(): ?int
     {
@@ -124,6 +132,18 @@ class Transportadora
     public function setCodigo(?string $codigo): self
     {
         $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    public function getCidade(): ?Cidade
+    {
+        return $this->cidade;
+    }
+
+    public function setCidade(?Cidade $cidade): self
+    {
+        $this->cidade = $cidade;
 
         return $this;
     }
