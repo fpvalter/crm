@@ -213,6 +213,11 @@ class Cliente
      */
     private $emailFinanceiro;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Cidade::class)
+     */
+    private $cidade;
+
     public function __construct()
     {
         $this->contatos = new ArrayCollection();
@@ -669,6 +674,18 @@ class Cliente
     public function setEmailFinanceiro(?string $emailFinanceiro): self
     {
         $this->emailFinanceiro = $emailFinanceiro;
+
+        return $this;
+    }
+
+    public function getCidade(): ?Cidade
+    {
+        return $this->cidade;
+    }
+
+    public function setCidade(?Cidade $cidade): self
+    {
+        $this->cidade = $cidade;
 
         return $this;
     }

@@ -35,7 +35,8 @@ class ClienteRepository extends ServiceEntityRepository
 
         // Main Query
         $query = $this->createQueryBuilder('c')
-            ->select('c.id', 'c.codigo', 'c.razaoSocial', "'Limeira' as cidade", "'SP' as uf", 'c.cnpj')
+            ->select('c.id', 'c.codigo', 'c.razaoSocial', 'c.nomeFantasia', 'cid.municipio as cidade', 'cid.uf', 'c.cnpj')
+            ->leftJoin('c.cidade', 'cid')
             ->setFirstResult($start)
             ->setMaxResults($length);
 
@@ -63,6 +64,7 @@ class ClienteRepository extends ServiceEntityRepository
         if ($search['value'] != '') {
 
             $filter_search = "c.razaoSocial LIKE '%" . $search['value'] . "%'";
+            $filter_search .= " OR c.nomeFantasia LIKE '%" . $search['value'] . "%'";
             $filter_search .= " OR c.cnpj LIKE '" . $search['value'] . "%'"; 
             $filter_search .= " OR c.codigo = '" . $search['value'] . "'";
 
@@ -82,7 +84,16 @@ class ClienteRepository extends ServiceEntityRepository
                     $order_by = 'c.razaoSocial';
                     break;
                 case 2:
+                    $order_by = 'c.nomeFantasia';
+                    break;
+                case 3:
                     $order_by = 'c.cnpj';
+                    break;
+                case 4:
+                    $order_by = 'cid.municipio';
+                    break;
+                case 5:
+                    $order_by = 'cid.uf';
                     break;
                 default:
                     $order_by = '';

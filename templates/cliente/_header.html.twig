@@ -3,9 +3,12 @@
         <div class="row">
             <div class="col-12">
                 <h4 class="m-t-0 m-b-0"><strong>{{ cliente.razaoSocial }}</strong><a class="pl-3" href="{{ path('contato', {'cliente':cliente.id}) }}" title="Contatos"><i class="fa fa-fw fa-comments-o text-muted"></i> </a></h4>
+                <span>{{ cliente.nomeFantasia }}</span><br>
                 <span>{{ cliente.cnpj }}</span>
                 <p class="m-t-15">
-                    {{ cliente.logradouro }}, {{ cliente.numero }}, {{ cliente.bairro }} - CIDADE-UF 
+                    {{ cliente.logradouro }}, {{ cliente.numero }}, {{ cliente.bairro }}
+                    {% if cliente.complemento %} <br> {{ cliente.complemento }} {% endif %}
+                    {% if cliente.cidade %} <br> {{ cliente.cidade.municipio }}-{{ cliente.cidade.uf }} {% endif %}
                     <br>CEP: {{ cliente.cep }}
                 </p>
                 <p>
@@ -33,7 +36,18 @@
                 {% if cliente.telefone3 %} <i class="fa fa-phone fa-xs"></i> {{ cliente.telefone3 }} {% endif %}
             </div>
         </div>
-
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                {% if cliente.site %} <i class="fa icon-link fa-xs"></i> {{ cliente.site }} &nbsp {% endif %}
+            </div>
+            <div class="col-12">
+                {% if cliente.emailNfe %} <strong>NFE:</strong> {{ cliente.emailNfe }} {% endif %}
+            </div>
+            <div class="col-12">
+                {% if cliente.emailFinanceiro %} <strong>Financeiro:</strong> {{ cliente.emailFinanceiro }} {% endif %}
+            </div>
+        </div>
         {% if ultimaNotaEstabelecimentos|length > 0 %}
         <hr>
         <div class="row">
