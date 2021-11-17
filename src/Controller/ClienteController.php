@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cliente;
 use App\Entity\Estabelecimento;
 use App\Entity\NotaFiscal;
+use App\Entity\Transportadora;
 use App\Entity\Vendedor;
 use App\Enum\DiaEntrega;
 use App\Repository\ClienteRepository;
@@ -30,11 +31,14 @@ class ClienteController extends BaseController
     public function __advancedFilter()
     {
 
+        $transportadoraRepo = $this->getDoctrine()->getRepository(Transportadora::class);
+        $transportadoras = $transportadoraRepo->findBy([], ["razaoSocial" => "ASC"]);
+
         $vendedorRepo = $this->getDoctrine()->getRepository(Vendedor::class);
         $vendedores = $vendedorRepo->findBy([], ["nome" => "ASC"]);
 
         return $this->render('cliente/_advanced_filter.html.twig', [
-            'diasEntrega' => DiaEntrega::$choices,
+            'transportadoras' => $transportadoras,
             'vendedores' => $vendedores
         ]);
     }
@@ -81,7 +85,7 @@ class ClienteController extends BaseController
         $search = $request->request->get('search');
         $order = $request->request->get('order');
         //$columns = $request->request->get('columns');
-        $advanced_filter['filtro_dia_entrega'] = $request->request->get('filtro_dia_entrega');
+        $advanced_filter['filtro_transportadora'] = $request->request->get('filtro_transportadora');
         $advanced_filter['filtro_vendedor'] = $request->request->get('filtro_vendedor');        
         
         $action_filter = null;

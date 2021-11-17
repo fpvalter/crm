@@ -37,12 +37,15 @@ class ClienteRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('c')
             ->select('c.id', 'c.codigo', 'c.razaoSocial', 'c.nomeFantasia', 'cid.municipio as cidade', 'cid.uf', 'c.cnpj')
             ->leftJoin('c.cidade', 'cid')
+            ->leftJoin('c.transportadora', 't')
             ->setFirstResult($start)
             ->setMaxResults($length);
 
         // Count Query
         $countQuery = $this->createQueryBuilder('c')
-            ->select('COUNT(c)');
+            ->select('COUNT(c)')
+            ->leftJoin('c.cidade', 'cid')
+            ->leftJoin('c.transportadora', 't');
 
         // Apply Action Filter
         if ($action_filter != null) {
@@ -50,8 +53,8 @@ class ClienteRepository extends ServiceEntityRepository
             $countQuery->andWhere($action_filter);
         }
 
-        if ($advanced_filter['filtro_dia_entrega'] != '') {
-            $filtro_status = "c.diaEntrega IN ('" . implode("','", $advanced_filter['filtro_dia_entrega']) . "')";
+        if ($advanced_filter['filtro_transportadora'] != '') {
+            $filtro_status = "t.id IN ('" . implode("','", $advanced_filter['filtro_transportadora']) . "')";
             $query->andWhere($filtro_status);
             $countQuery->andWhere($filtro_status);
         }

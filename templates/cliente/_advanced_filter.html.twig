@@ -8,9 +8,9 @@
         </select>
     </div>
     <div class="col-2">
-        <select class="form-control redraw-data-table multiselect" id="filtro_dia_entrega" name="filtro_dia_entrega" multiple="multiple" data-placeholder="Dia entrega">
-            {% for dia in diasEntrega %}
-                <option value="{{ dia }}">{{ dia }}</option>
+        <select class="form-control redraw-data-table multiselect" id="filtro_transportadora" name="filtro_transportadora" multiple="multiple" data-placeholder="Transportadora">
+            {% for transp in transportadoras %}
+                <option value="{{ transp.id }}">{{ transp.razaoSocial }}</option>
             {% endfor %}
         </select>
     </div>

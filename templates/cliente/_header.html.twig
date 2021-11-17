@@ -19,7 +19,10 @@
                     {% endif %}
                 </p>
                 <p>
-                    <span class="badge badge-info">Dia entrega: {{ cliente.diaEntrega }}</span>
+                    {% if cliente.transportadora %}
+                        <span class="badge badge-info">Transportadora: {{ cliente.transportadora.razaoSocial }}</span>
+                    {% endif %}
+                    
                     <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra|join(' | ') }}</span>
                 </p>
             </div>

@@ -20,21 +20,26 @@ class NegocioRepository extends ServiceEntityRepository
         parent::__construct($registry, Negocio::class);
     }
 
-    public function findByEtapaVendedorDiaEntrega($etapaId, $vendedorId, $diaEntrega)
+    public function findByEtapaVendedorTransportadora($etapaId, $vendedorId, $transportadoraId)
     {
-        return $this->createQueryBuilder('n')
+        $query = $this->createQueryBuilder('n')
             ->join('n.cliente', 'c')
             ->andWhere('n.status = :status')
             ->andWhere('n.negocioEtapa = :etapa_id')
-            ->andWhere('c.vendedor = :vendedor_id')
-            ->andWhere('c.diaEntrega = :dia_entrega')
             ->setParameter('status', NegocioStatus::ABERTO)
             ->setParameter('etapa_id', $etapaId)
-            ->setParameter('vendedor_id', $vendedorId)
-            ->setParameter('dia_entrega', $diaEntrega )
-            ->orderBy('n.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('n.id', 'ASC');
+
+        if($vendedorId) {
+            $query->andWhere('c.vendedor = :vendedor_id')
+                ->setParameter('vendedor_id', $vendedorId);
+        }
+        if($transportadoraId) {
+            $query->andWhere('c.transportadora = :transportadora_id')
+                ->setParameter('transportadora_id', $transportadoraId );
+        }
+
+        return $query->getQuery()->getResult();
             
     }
 

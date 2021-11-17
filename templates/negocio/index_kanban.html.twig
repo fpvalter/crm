@@ -111,10 +111,6 @@
             $("#filtro_vendedor").val({{ app.user.vendedor.id }})
         {% endif %}
 
-        let now = new Date();
-        let diaSemana = now.getDay()
-        $("#filtro_dia_entrega").val(baseSemana[diaSemana]);
-
         //To full screen
         $('.btn-toggle-fullwidth').click();
 
@@ -158,7 +154,7 @@
             {
                 negocio_etapa: etapaId,
                 vendedor: $("#filtro_vendedor").val(),
-                dia_entrega: $("#filtro_dia_entrega").val()
+                transportadora: $("#filtro_transportadora").val()
             }, 
             function(data) {
                 if(data != "") {

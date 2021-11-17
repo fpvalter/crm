@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Cliente;
 use App\Entity\Negocio;
 use App\Entity\NegocioEtapa;
+use App\Entity\Transportadora;
 use App\Entity\Vendedor;
-use App\Enum\DiaEntrega;
 use App\Enum\FollowupTipo;
 use App\Enum\NegocioStatus;
 use App\Form\NegocioClienteType;
@@ -26,11 +26,14 @@ class NegocioController extends BaseController
     public function __advancedFilter()
     {
 
+        $transportadoraRepo = $this->getDoctrine()->getRepository(Transportadora::class);
+        $transportadoras = $transportadoraRepo->findBy([], ["razaoSocial" => "ASC"]);
+
         $vendedorRepo = $this->getDoctrine()->getRepository(Vendedor::class);
         $vendedores = $vendedorRepo->findBy([], ["nome" => "ASC"]);
 
         return $this->render('negocio/_advanced_filter.html.twig', [
-            'diasEntrega' => DiaEntrega::$choices,
+            'transportadoras' => $transportadoras,
             'vendedores' => $vendedores
         ]);
     }
@@ -122,10 +125,10 @@ class NegocioController extends BaseController
     {
         $etapa = $request->request->get('negocio_etapa');
         $vendedor = $request->request->get('vendedor');
-        $diaEntrega = $request->request->get('dia_entrega');
+        $transportadora = $request->request->get('transportadora');
 
         $negocioRepo = $this->getDoctrine()->getRepository(Negocio::class);
-        $negocios = $negocioRepo->findByEtapaVendedorDiaEntrega($etapa, $vendedor, $diaEntrega);
+        $negocios = $negocioRepo->findByEtapaVendedorTransportadora($etapa, $vendedor, $transportadora);
 
         return $this->render('negocio/_kanban.html.twig', [
             'negocios' => $negocios

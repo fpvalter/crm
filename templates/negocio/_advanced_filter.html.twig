@@ -8,9 +8,10 @@
         </select>
     </div>
     <div class="col-lg-3 col-sm-12">
-        <select class="form-control redraw-data-table" id="filtro_dia_entrega" name="filtro_dia_entrega">
-            {% for dia in diasEntrega %}
-                <option value="{{ dia }}">{{ dia }}</option>
+        <select class="form-control redraw-data-table" id="filtro_transportadora" name="filtro_transportadora">
+            <option value="">Qualquer transportadora</option>
+            {% for transp in transportadoras %}
+                <option value="{{ transp.id }}">{{ transp.razaoSocial }}</option>
             {% endfor %}
         </select>
     </div>

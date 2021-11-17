@@ -11,7 +11,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Enum\ClienteTipoCompra;
-use App\Enum\DiaEntrega;
 use App\Enum\TipoPessoa;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -160,12 +159,6 @@ class Cliente
     private $notaFiscals;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"clientePost", "clienteGet"})
-     */
-    private $diaEntrega;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Vendedor::class, inversedBy="clientes")
      * @Groups({"clientePost", "clienteGet"})
      */
@@ -215,8 +208,15 @@ class Cliente
 
     /**
      * @ORM\ManyToOne(targetEntity=Cidade::class)
+     * @Groups({"clientePost", "clienteGet"})
      */
     private $cidade;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Transportadora::class)
+     * @Groups({"clientePost", "clienteGet"})
+     */
+    private $transportadora;
 
     public function __construct()
     {
@@ -551,24 +551,7 @@ class Cliente
         }
 
         return $this;
-    }
-
-    public function getDiaEntrega(): ?string
-    {
-        return $this->diaEntrega;
-    }
-
-    public function setDiaEntrega(?string $diaEntrega): self
-    {
-
-        if ($diaEntrega && !in_array($diaEntrega, DiaEntrega::$choices)) {
-            throw new \InvalidArgumentException("Dia entrega invalido! [" . implode(",", DiaEntrega::$choices) . "]");
-        }
-
-        $this->diaEntrega = $diaEntrega;
-
-        return $this;
-    }    
+    }   
 
     public function getVendedor(): ?Vendedor
     {
@@ -686,6 +669,18 @@ class Cliente
     public function setCidade(?Cidade $cidade): self
     {
         $this->cidade = $cidade;
+
+        return $this;
+    }
+
+    public function getTransportadora(): ?Transportadora
+    {
+        return $this->transportadora;
+    }
+
+    public function setTransportadora(?Transportadora $transportadora): self
+    {
+        $this->transportadora = $transportadora;
 
         return $this;
     }

@@ -86,11 +86,6 @@
                 $("#filtro_vendedor").val({{ app.user.vendedor.id }})
             {% endif %}
 
-            let now = new Date();
-            let diaSemana = now.getDay()
-
-            $("#filtro_dia_entrega").val(baseSemana[diaSemana]);
-
             let dataTable = $('#table_clientes').DataTable( {
                 "responsive": true,
                 "language": {
@@ -103,7 +98,7 @@
                     "url": '{{ path('cliente_list') }}',
                     "type": 'POST',
                     "data": (data) => {
-                        data.filtro_dia_entrega = $("#filtro_dia_entrega").val();
+                        data.filtro_transportadora = $("#filtro_transportadora").val();
                         data.filtro_vendedor = $("#filtro_vendedor").val();
                     }
                 },
