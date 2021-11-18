@@ -70,6 +70,30 @@ class Produto
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Familia::class, inversedBy="produtos")
+     * @Groups({"produtoPost"})
+     */
+    private $familia;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Subfamilia::class, inversedBy="produtos")
+     * @Groups({"produtoPost"})
+     */
+    private $subfamilia;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Marca::class, inversedBy="produtos")
+     * @Groups({"produtoPost"})
+     */
+    private $marca;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Grupo::class, inversedBy="produtos")
+     * @Groups({"produtoPost"})
+     */
+    private $grupo;
+
     public function __construct()
     {
         $this->produtoEstabelecimentos = new ArrayCollection();
@@ -166,6 +190,54 @@ class Produto
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFamilia(): ?Familia
+    {
+        return $this->familia;
+    }
+
+    public function setFamilia(?Familia $familia): self
+    {
+        $this->familia = $familia;
+
+        return $this;
+    }
+
+    public function getSubfamilia(): ?Subfamilia
+    {
+        return $this->subfamilia;
+    }
+
+    public function setSubfamilia(?Subfamilia $subfamilia): self
+    {
+        $this->subfamilia = $subfamilia;
+
+        return $this;
+    }
+
+    public function getMarca(): ?Marca
+    {
+        return $this->marca;
+    }
+
+    public function setMarca(?Marca $marca): self
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    public function getGrupo(): ?Grupo
+    {
+        return $this->grupo;
+    }
+
+    public function setGrupo(?Grupo $grupo): self
+    {
+        $this->grupo = $grupo;
 
         return $this;
     }

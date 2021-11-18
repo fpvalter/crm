@@ -11,8 +11,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "patch"},
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
  *     denormalizationContext={"groups"={"cidadePost"}}
  * )
  * @ORM\Entity(repositoryClass=CidadeRepository::class)
