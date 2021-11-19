@@ -65,6 +65,11 @@ class Familia
         $this->produtos = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->descricao;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
