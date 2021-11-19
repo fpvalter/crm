@@ -94,6 +94,42 @@ class Produto
      */
     private $grupo;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $indice;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $altura;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $aro;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $ht;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $largura;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"produtoPost"})
+     */
+    private $runflat;
+
     public function __construct()
     {
         $this->produtoEstabelecimentos = new ArrayCollection();
@@ -238,6 +274,78 @@ class Produto
     public function setGrupo(?Grupo $grupo): self
     {
         $this->grupo = $grupo;
+
+        return $this;
+    }
+
+    public function getIndice(): ?string
+    {
+        return $this->indice;
+    }
+
+    public function setIndice(?string $indice): self
+    {
+        $this->indice = $indice;
+
+        return $this;
+    }
+
+    public function getAltura(): ?string
+    {
+        return $this->altura;
+    }
+
+    public function setAltura(?string $altura): self
+    {
+        $this->altura = $altura;
+
+        return $this;
+    }
+
+    public function getAro(): ?string
+    {
+        return $this->aro;
+    }
+
+    public function setAro(?string $aro): self
+    {
+        $this->aro = $aro;
+
+        return $this;
+    }
+
+    public function getHt(): ?string
+    {
+        return $this->ht;
+    }
+
+    public function setHt(?string $ht): self
+    {
+        $this->ht = $ht;
+
+        return $this;
+    }
+
+    public function getLargura(): ?string
+    {
+        return $this->largura;
+    }
+
+    public function setLargura(?string $largura): self
+    {
+        $this->largura = $largura;
+
+        return $this;
+    }
+
+    public function getRunflat(): ?string
+    {
+        return $this->runflat;
+    }
+
+    public function setRunflat(?string $runflat): self
+    {
+        $this->runflat = $runflat;
 
         return $this;
     }

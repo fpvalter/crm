@@ -88,6 +88,30 @@ class NotaFiscal
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"notaFiscalPost"})
+     */
+    private $valorTotal;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"notaFiscalPost"})
+     */
+    private $valorDesconto;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"notaFiscalPost"})
+     */
+    private $valorFrete;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"notaFiscalPost"})
+     */
+    private $status;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -212,4 +236,53 @@ class NotaFiscal
 
         return $this;
     }
+
+    public function getValorTotal(): ?float
+    {
+        return $this->valorTotal;
+    }
+
+    public function setValorTotal(?float $valorTotal): self
+    {
+        $this->valorTotal = $valorTotal;
+
+        return $this;
+    }
+
+    public function getValorDesconto(): ?float
+    {
+        return $this->valorDesconto;
+    }
+
+    public function setValorDesconto(?float $valorDesconto): self
+    {
+        $this->valorDesconto = $valorDesconto;
+
+        return $this;
+    }
+
+    public function getValorFrete(): ?float
+    {
+        return $this->valorFrete;
+    }
+
+    public function setValorFrete(?float $valorFrete): self
+    {
+        $this->valorFrete = $valorFrete;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+    
 }
