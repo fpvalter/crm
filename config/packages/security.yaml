@@ -58,5 +58,5 @@ security:
         - { path: ^/api_docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: '^/admin/', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+        - { path: '^/admin', roles: [ROLE_ADMIN] }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

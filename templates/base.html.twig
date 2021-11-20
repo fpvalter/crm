@@ -206,7 +206,7 @@
                         <div class="tab-pane animated fadeIn active" id="menu_principal">
                             <nav class="sidebar-nav">
                                 <ul class="main-menu metismenu">
-                                    <li class="active"><a href="{{ path('crm_index') }}"><i class="icon-home"></i><span>Home</span></a></li>
+                                    <li><a href="{{ path('crm_index') }}"><i class="icon-home"></i><span>Home</span></a></li>
                     
                                     <li>
                                         <a href="#Cadastros" class="has-arrow"><i class="fa fa-database"></i><span>Cadastros</span></a>
@@ -221,6 +221,9 @@
                                         </ul>
                                     </li>
                                 
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li><a href="{{ path('admin') }}"><i class="fa fa-cogs"></i><span>Admin</span></a></li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>
