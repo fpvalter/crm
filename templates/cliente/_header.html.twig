@@ -17,13 +17,27 @@
                     {% else %}
                         <span class="badge badge-danger">Sem vendedor</span>
                     {% endif %}
-                </p>
-                <p>
+
                     {% if cliente.transportadora %}
                         <span class="badge badge-info">Transportadora: {{ cliente.transportadora.razaoSocial }}</span>
                     {% endif %}
-                    
-                    <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra|join(' | ') }}</span>
+                </p>
+                <p>                    
+                    {% if edit %}
+                        
+                        <select class="form-control multiselect" id="tipo_compra" name="tipo_compra" multiple="multiple" data-placeholder="Tipo Compra">
+                            {% for tipoCompra in tiposCompra %}
+                                {% if tipoCompra not in cliente.tipoCompra %}
+                                    <option value="{{ tipoCompra}}">{{ tipoCompra }}</option>
+                                {% else %}
+                                    <option selected value="{{ tipoCompra}}">{{ tipoCompra }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        
+                    {% else %}
+                        <span class="badge badge-info">Tipo compra: {{ cliente.tipoCompra|join(' | ') }}</span>
+                    {% endif %}
                 </p>
             </div>
         </div>

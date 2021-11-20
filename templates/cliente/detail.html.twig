@@ -6,6 +6,19 @@
 
     {{ parent() }}
 
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/multi-select/css/multi-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert/sweetalert.css') }}">
+
+    <style>
+        label.checkbox {
+            font-size: small !important;
+        }
+        .multiselect-selected-text {
+            font-size: small !important;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body_header %}
@@ -33,7 +46,8 @@
                         {{ render(controller(
                             'App\\Controller\\ClienteController::__header',
                             { 
-                                'cliente': cliente.id 
+                                'cliente': cliente.id,
+                                'edit': true
                             }
 
                         )) }}
@@ -88,6 +102,9 @@
     {{ parent() }}
 
     <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
+    <script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
+    <script src="{{ asset('assets/vendor/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
     
@@ -98,6 +115,28 @@
             $("#btn-carregar-mais").click(()=>{
                 getFollowups();
             });
+
+            $('.multiselect').multiselect({
+                buttonClass: 'btn btn-sm btn-info'
+            });
+
+            $('#tipo_compra').change(function(){
+            
+                $.post("{{ path('cliente_save_tipo_compra') }}",
+                    {
+                        cliente_id: {{ cliente.id }},
+                        tipo_compra: $('#tipo_compra').val()
+                    }, 
+                    function(data) {
+                        
+                        if(!data || !data.success) {
+                            swal("Erro", "Ocorreu um erro ao salvar o tipo de compra", "error");
+                        } 
+
+                    }, "json"
+                );
+            });
+
         });
 
         function getFollowups() {

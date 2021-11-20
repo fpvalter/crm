@@ -7,6 +7,7 @@ use App\Entity\Estabelecimento;
 use App\Entity\NotaFiscal;
 use App\Entity\Transportadora;
 use App\Entity\Vendedor;
+use App\Enum\ClienteTipoCompra;
 use App\Enum\DiaEntrega;
 use App\Repository\ClienteRepository;
 use App\Repository\NotaFiscalRepository;
@@ -43,7 +44,7 @@ class ClienteController extends BaseController
         ]);
     }
 
-    public function __header(Cliente $cliente)
+    public function __header(Cliente $cliente, bool $edit = false)
     {
         
         $ultimaNotaEstabelecimentos = [];
@@ -61,6 +62,8 @@ class ClienteController extends BaseController
 
         return $this->render('cliente/_header.html.twig', [
             "cliente" => $cliente,
+            "edit" => $edit,
+            'tiposCompra' => ClienteTipoCompra::$choices,
             "ultimaNotaEstabelecimentos" => $ultimaNotaEstabelecimentos
         ]);
     }
@@ -142,6 +145,30 @@ class ClienteController extends BaseController
             "cliente" => $cliente,
             "ultimaNotaEstabelecimentos" => $ultimaNotaEstabelecimentos
         ]);
+    }
+
+    /**
+     * @Route("/save-tipo-compra", name="cliente_save_tipo_compra", methods="POST")
+     */
+    public function saveTipoCompra(Request $request): JsonResponse
+    {
+
+        $cliente_id = $request->request->get('cliente_id');
+        $tipoCompra = $request->request->get('tipo_compra');
+
+        $cliente = $this->repository->find($cliente_id);
+
+        if($tipoCompra == "") {
+            $cliente->setTipoCompra([]);
+        } else {
+            $cliente->setTipoCompra($tipoCompra);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($cliente);
+        $em->flush();
+
+        return $this->json(['success' => true]);
     }
     
 }
