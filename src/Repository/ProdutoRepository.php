@@ -19,6 +19,18 @@ class ProdutoRepository extends ServiceEntityRepository
         parent::__construct($registry, Produto::class);
     }
 
+    public function findByCodigo($produto)
+    {
+        $codigo = $produto['codigo'];
+
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.codigo = :codigo')
+            ->setParameter('codigo', $codigo)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return Produto[] Returns an array of Produto objects
     //  */

@@ -11,9 +11,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ProdutoRepository::class)
+ * @UniqueEntity(
+ *     fields={"codigo"},
+ *     repositoryMethod="findByCodigo",
+ *     errorPath="codigo",
+ *     message="Codigo já cadastrado"
+ * )
  * @ApiResource(
  *      collectionOperations={"get", "post"},
  *      itemOperations={"get", "put", "patch"},
