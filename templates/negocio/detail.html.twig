@@ -30,8 +30,16 @@
             <div class="card client-detail">
                 <div class="body">
                     <h4 class="m-t-0 m-b-0">
-                        <strong>Negócio #{{ negocio.id }}</strong> <small>| {{ negocio.createdAt|date('d/m/Y') }}</small> 
-                        <span class="badge badge-info">{{ negocio.status }}</span>    
+                        <strong>Negócio #{{ negocio.id }}</strong> <small>| {{ negocio.createdAt|date('d/m/Y') }}</small>
+
+                        {% if negocio.status == "ABERTO" %} 
+                            <span class="badge badge-info"><strong>{{ negocio.status }}</strong></span>
+                        {% elseif negocio.status == "FECHADO" %}
+                            <span class="badge badge-success"><strong><i class="fa fa-thumbs-up"></i> {{ negocio.status }}</strong></span>
+                        {% elseif negocio.status == "PERDIDO" %}
+                            <span class="badge badge-danger"><strong><i class="fa fa-thumbs-down"></i> {{ negocio.status }}</strong></span>
+                        {% endif %}
+
                     </h4>
                     <p class="m-t-15">
                         {{ negocio.titulo }}
@@ -39,6 +47,11 @@
                     <p class="m-t-15">
                          <strong>Contato: </strong>{{ negocio.contato.nome }} - {{ negocio.contato.email }}</span>
                     </p>
+                    
+                    {% if negocio.status == "ABERTO"%}
+                        <button id="btnPerder" type="button" class="btn btn-danger"><i class="fa fa-thumbs-down"></i> Perder</button>
+                        <button id="btnGanhar" type="button" class="btn btn-success m-l-5"><i class="fa fa-thumbs-up"></i> Ganhar</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -118,6 +131,13 @@
             $("#btn-carregar-mais").click(()=>{
                 getFollowups();
             });
+
+            $("#btnPerder").click(function() {
+                changeStatus("PERDIDO");
+            });
+            $("#btnGanhar").click(function() {
+                changeStatus("FECHADO");
+            });
         });
 
         function getFollowups() {
@@ -138,6 +158,31 @@
                         $("#btn-carregar-mais").attr("disabled", "disabled").html("Não há mais registros");
                     }
                 }
+            );
+        }
+
+        function changeStatus(status) {
+            
+            $.post("{{ path('negocio_change_status') }}",
+                {
+                    negocio_id: {{ negocio.id }},
+                    status: status
+                }, 
+                function(data) {
+                    
+                    if(data.success) {
+                        if(status == "FECHADO") {
+                            showAlertCallback("Parabéns", "Mais um negócio fechado", "success", ()=>window.location.reload());
+                        } else {
+                            showAlertCallback("Que pena", "Tentamos na próxima", "info", ()=>window.location.reload());
+                        }
+
+                    } else {
+                        showAlert("Erro", "Ocorreu um erro ao mudar o status do negocio", "error");
+                    }
+                    
+
+                }, "json"
             );
         }
 

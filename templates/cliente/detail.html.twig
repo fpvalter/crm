@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/multi-select/css/multi-select.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert/sweetalert.css') }}">
 
     <style>
         label.checkbox {
@@ -104,7 +103,6 @@
     <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
     <script src="{{ asset('assets/vendor/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
     <script src="{{ asset('assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js') }}"></script>
-    <script src="{{ asset('assets/vendor/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
     
@@ -130,7 +128,7 @@
                     function(data) {
                         
                         if(!data || !data.success) {
-                            swal("Erro", "Ocorreu um erro ao salvar o tipo de compra", "error");
+                            showAlert("Erro", "Ocorreu um erro ao salvar o tipo de compra", "error");
                         } 
 
                     }, "json"

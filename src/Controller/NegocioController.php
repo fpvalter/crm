@@ -141,7 +141,7 @@ class NegocioController extends BaseController
     public function changeEtapa(Request $request): JsonResponse
     {
 
-        $success = true;
+        $success = false;
         $msg = "";
 
         $em = $this->getDoctrine()->getManager();   
@@ -170,8 +170,55 @@ class NegocioController extends BaseController
 
             $em->getConnection()->rollBack();
 
-            $success = true;
+            $success = false;
             $msg = "Não foi possível mudar o Negocio para outra etapa. " . $ex->getMessage();
+        }
+
+        return $this->json(["success" => $success, "msg" => $msg]);
+
+    }
+
+    /**
+     * @Route("/change-status", name="negocio_change_status", methods="POST")
+     */
+    public function changeStatus(Request $request): JsonResponse
+    {
+
+        $success = false;
+        $msg = "";
+
+        $em = $this->getDoctrine()->getManager();   
+        $em->getConnection()->beginTransaction();   
+          
+        try {
+
+            $idNegocio = $request->request->get('negocio_id');
+            $status = $request->request->get('status');
+
+            $negocio = $this->getDoctrine()->getRepository(Negocio::class)->find($idNegocio);
+
+            if($negocio->getStatus() != NegocioStatus::ABERTO) {
+                throw new \Exception("Só é possível mudar status de negocios abertos");
+            }
+            if(!in_array($status, NegocioStatus::$choices)) {
+                throw new \Exception("Informe um status valido. [" . implode(", ", NegocioStatus::$choices) . "]");
+            }
+
+            $negocio->setStatus($status);
+
+            $em->persist($negocio);
+            $em->flush();
+
+            FollowupController::add($em, $this->getUser(), $negocio, "Negocio #" . $negocio->getId() . " " . $status, FollowupTipo::INFO);
+            $em->getConnection()->commit();
+
+            $success = true;
+        } catch(\Exception $ex) {
+
+            $em->getConnection()->rollBack();
+
+            $success = false;
+            $msg = "Não foi possível mudar o status do Negocio. " . $ex->getMessage();
         }
 
         return $this->json(["success" => $success, "msg" => $msg]);
