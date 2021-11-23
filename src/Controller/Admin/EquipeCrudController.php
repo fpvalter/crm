@@ -61,7 +61,7 @@ class EquipeCrudController extends AbstractCrudController
                 return $action->setIcon('fa fa-fw fa-pencil');
             })
             ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setIcon('fa fa-fw fa-trash');
+                return $action->setIcon('fa fa-fw fa-trash')->setCssClass('action-delete');
             })
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-fw fa-search');
