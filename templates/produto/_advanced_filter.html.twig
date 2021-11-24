@@ -1,0 +1,34 @@
+<div class="row clearfix mb-4">
+    <div class="col-3">
+        <select class="form-control redraw-data-table" id="filtro_familia" name="filtro_familia">
+            <option value="">Qualquer familia</option>
+            {% for familia in familias %}
+                <option value="{{ familia.id }}">{{ familia.descricao }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-3">
+        <select class="form-control redraw-data-table" id="filtro_subfamilia" name="filtro_subfamilia">
+            <option value="">Qualquer subfamilia</option>
+            {% for subfamilia in subfamilias %}
+                <option value="{{ subfamilia.id }}">{{ subfamilia.descricao }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-3">
+        <select class="form-control redraw-data-table" id="filtro_grupo" name="filtro_grupo">
+            <option value="">Qualquer grupo</option>
+            {% for grupo in grupos %}
+                <option value="{{ grupo.id }}">{{ grupo.descricao }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-3">
+        <select class="form-control redraw-data-table" id="filtro_marca" name="filtro_marca">
+            <option value="">Qualquer marca</option>
+            {% for marca in marcas %}
+                <option value="{{ marca.id }}">{{ marca.descricao }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

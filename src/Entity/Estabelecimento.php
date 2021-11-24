@@ -100,7 +100,7 @@ class Estabelecimento
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=NotaFiscal::class, mappedBy="Estabelecimento")
+     * @ORM\OneToMany(targetEntity=NotaFiscal::class, mappedBy="estabelecimento")
      */
     private $notaFiscals;
 

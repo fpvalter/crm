@@ -8,9 +8,7 @@ use App\Entity\NotaFiscal;
 use App\Entity\Transportadora;
 use App\Entity\Vendedor;
 use App\Enum\ClienteTipoCompra;
-use App\Enum\DiaEntrega;
 use App\Repository\ClienteRepository;
-use App\Repository\NotaFiscalRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,6 +94,9 @@ class ClienteController extends BaseController
         $results = $this->repository->listDataTable($start, $length, $order, $search, $action_filter, $advanced_filter);
 
         foreach ($results["results"] as &$r) {
+
+            $r['cidade'] = $r['cidade'] . "-" . $r['uf'];
+
             $r['action_column'] = '<div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <b class="caret"></b></button>
                                         <div class="dropdown-menu dropdown-menu-right" style="z-index: 99999">

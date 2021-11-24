@@ -95,9 +95,6 @@ class ClienteRepository extends ServiceEntityRepository
                 case 4:
                     $order_by = 'cid.municipio';
                     break;
-                case 5:
-                    $order_by = 'cid.uf';
-                    break;
                 default:
                     $order_by = '';
             }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clientes{% endblock %}
+{% block title %}Produtos{% endblock %}
 
 {% block stylesheets %}
 
@@ -19,11 +19,11 @@
 
     <div class="row">
         <div class="col-lg-6 col-md-8 col-sm-12">
-            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Clientes</h2>
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Produtos</h2>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
                 <li class="breadcrumb-item">Cadastros</li>
-                <li class="breadcrumb-item active">Clientes</li>
+                <li class="breadcrumb-item active">Produtos</li>
             </ul>
         </div> 
     </div>
@@ -37,28 +37,28 @@
                 <div class="body">
                     
                     {{ render(controller(
-                        'App\\Controller\\ClienteController::__advancedFilter'
+                        'App\\Controller\\ProdutoController::__advancedFilter'
                     )) }}
 
                     <div class="table-responsive">
-                        <table id="table_clientes" class="table table-hover dataTable">
+                        <table id="table_produtos" class="table table-hover dataTable">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Razao</th>
-                                    <th>Fantasia</th>
-                                    <th>CNPJ</th>
-                                    <th>Cidade</th>
+                                    <th>Codigo</th>
+                                    <th>Descricao</th>
+                                    <th>Categoria</th>
+                                    <th>Familia</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Razao</th>
-                                    <th>Fantasia</th>
-                                    <th>CNPJ</th>
-                                    <th>Cidade</th>
+                                    <th>Codigo</th>
+                                    <th>Descricao</th>
+                                    <th>Categoria</th>
+                                    <th>Familia</th>
                                     <th></th>
                                 </tr>
                             </tfoot>
@@ -84,11 +84,7 @@
 
         $(document).ready(function(){
 
-            {% if app.user.vendedor %}
-                $("#filtro_vendedor").val({{ app.user.vendedor.id }})
-            {% endif %}
-
-            let dataTable = $('#table_clientes').DataTable( {
+            let dataTable = $('#table_produtos').DataTable( {
                 "responsive": true,
                 "language": {
                     url: '{{ asset('assets/bundles/datatablesportuguese.json') }}'
@@ -97,19 +93,21 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": '{{ path('cliente_list') }}',
+                    "url": '{{ path('produto_list') }}',
                     "type": 'POST',
                     "data": (data) => {
-                        data.filtro_transportadora = $("#filtro_transportadora").val();
-                        data.filtro_vendedor = $("#filtro_vendedor").val();
+                        data.filtro_familia = $("#filtro_familia").val();
+                        data.filtro_subfamilia = $("#filtro_subfamilia").val();
+                        data.filtro_grupo = $("#filtro_grupo").val();
+                        data.filtro_marca = $("#filtro_marca").val();
                     }
                 },
                 "columns": [
                     { "data": "id" },
-                    { "data": "razaoSocial" },
-                    { "data": "nomeFantasia" },
-                    { "data": "cnpj" },
-                    { "data": "cidade" },
+                    { "data": "codigo" },
+                    { "data": "descricao" },
+                    { "data": "categoria" },
+                    { "data": "familia" },
                     {
                         "data":           'action_column',
                         "className":      'details-control',
@@ -117,12 +115,9 @@
                         "defaultContent": ''
                     },
                 ],
-                "order": [[1, 'asc']]
+                "order": [[2, 'asc']]
             } );
 
-            $('.multiselect').multiselect({
-                buttonClass: 'btn btn-default btn-sm'
-            });
 
             $('.redraw-data-table').change(function(){
                 dataTable.draw();
