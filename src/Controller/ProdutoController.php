@@ -89,7 +89,7 @@ class ProdutoController extends BaseController
             $r['action_column'] = '<div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações <b class="caret"></b></button>
                                         <div class="dropdown-menu dropdown-menu-right" style="z-index: 99999">
-                                        
+                                        <a class="dropdown-item" href="' . $this->generateUrl('produto_detail', ['produto' => $r['id']]) . '"><i class="fa fa-fw icon-info"></i> Info</a>
                                         </div>
                                     </div>
                                 ';
@@ -111,7 +111,9 @@ class ProdutoController extends BaseController
      */
     public function detail(Request $request, Produto $produto): Response
     {
-        return $this->render('produto/detail.html.twig');
+        return $this->render('produto/detail.html.twig', [
+            'produto' => $produto
+        ]);
     }
     
 }

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produto :: {{ produto.descricao }} {% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <style>
+        label.checkbox {
+            font-size: small !important;
+        }
+        .multiselect-selected-text {
+            font-size: small !important;
+        }
+        
+        .badge {
+            margin-left: 0px !important
+        }
+    </style>
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Produto detalhe</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Cadastros</li>
+                <li class="breadcrumb-item"><a href="{{ path('produto') }}">Produtos</a></li>
+                <li class="breadcrumb-item active">Detalhe</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card client-detail">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="m-t-0 m-b-0"><strong>{{ produto.descricao }}</strong></h4>
+                            
+                            <br>
+                            <h5>
+                                <span class="badge badge-info" title="Categoria">{{ produto.categoria }}</span>
+
+                                {% if produto.familia %}
+                                    <span class="badge badge-info" title="Familia">{{ produto.familia.descricao }}</span>
+                                {% endif %}
+                                {% if produto.subfamilia %}
+                                    <span class="badge badge-info" title="Subfamilia">{{ produto.subfamilia.descricao }}</span>
+                                {% endif %}
+                                {% if produto.grupo %}
+                                    <span class="badge badge-info" title="Grupo">{{ produto.grupo.descricao }}</span>
+                                {% endif %}
+                                {% if produto.marca %}
+                                    <span class="badge badge-info" title="Marca">{{ produto.marca.descricao }}</span>
+                                {% endif %}
+                            </h5>
+
+                            <p>
+                                <span class="badge badge-default">Indice: {{ produto.indice }}</span>
+                                <span class="badge badge-default">Aro: {{ produto.aro }}</span>
+                                <span class="badge badge-default">Altura: {{ produto.altura }}</span>
+                                <span class="badge badge-default">Largura: {{ produto.largura }}</span>
+                                <span class="badge badge-default">HT: {{ produto.ht }}</span>
+                                <span class="badge badge-default">Runflat: {{ produto.runflat }}</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
