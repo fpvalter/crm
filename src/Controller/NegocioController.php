@@ -10,6 +10,7 @@ use App\Entity\Vendedor;
 use App\Enum\FollowupTipo;
 use App\Enum\NegocioStatus;
 use App\Form\NegocioClienteType;
+use App\Repository\NegocioRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class NegocioController extends BaseController
 {
+
+    private NegocioRepository $repository;
 
     public function __advancedFilter()
     {
@@ -36,6 +39,11 @@ class NegocioController extends BaseController
             'transportadoras' => $transportadoras,
             'vendedores' => $vendedores
         ]);
+    }
+
+    public function __construct(NegocioRepository $repository)
+    {
+        $this->repository = $repository;
     }
 
     /**
@@ -57,6 +65,44 @@ class NegocioController extends BaseController
 
         return $this->render('negocio/index_kanban.html.twig', [
             'etapas' => $etapas
+        ]);
+    }
+
+    /**
+     * @Route("/negocio_list", name="negocio_list", methods="POST")
+     */
+    public function list(Request $request): JsonResponse
+    {
+
+        $draw = intval($request->request->get('draw'));
+        $start = $request->request->get('start');
+        $length = $request->request->get('length');
+        $search = $request->request->get('search');
+        $order = $request->request->get('order');
+        //$columns = $request->request->get('columns');
+        $advanced_filter['filtro_transportadora'] = $request->request->get('filtro_transportadora');
+        $advanced_filter['filtro_vendedor'] = $request->request->get('filtro_vendedor');        
+        
+        $action_filter = null;
+        
+        $results = $this->repository->listDataTable($start, $length, $order, $search, $action_filter, $advanced_filter);
+
+        foreach ($results["results"] as &$r) {
+
+            $r['action_column'] = '<div class="btn-group">
+                                        <a class="btn btn-info" href="' . $this->generateUrl('negocio_detail', ['negocio' => $r['id']]) . '"><i class="fa fa-fw icon-info"></i> Info</a>
+                                    </div>
+                                ';
+        }
+
+        $total_objects_count = $this->repository->countNegocios();
+        $filtered_objects_count = $results["countResult"];
+
+        return $this->json([
+            "draw" => $draw,
+            "recordsTotal" => $total_objects_count,
+            "recordsFiltered" => $filtered_objects_count,
+            "data" => $results["results"]
         ]);
     }
 
@@ -127,8 +173,7 @@ class NegocioController extends BaseController
         $vendedor = $request->request->get('vendedor');
         $transportadora = $request->request->get('transportadora');
 
-        $negocioRepo = $this->getDoctrine()->getRepository(Negocio::class);
-        $negocios = $negocioRepo->findByEtapaVendedorTransportadora($etapa, $vendedor, $transportadora);
+        $negocios = $this->repository->findByEtapaVendedorTransportadora($etapa, $vendedor, $transportadora);
 
         return $this->render('negocio/_kanban.html.twig', [
             'negocios' => $negocios
