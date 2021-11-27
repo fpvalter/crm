@@ -65,9 +65,15 @@ class Negocio
      */
     private $contato;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="negocio")
+     */
+    private $notifications;
+
     public function __construct()
     {
         $this->followups = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +196,36 @@ class Negocio
     public function setContato(?Contato $contato): self
     {
         $this->contato = $contato;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setNegocio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getNegocio() === $this) {
+                $notification->setNegocio(null);
+            }
+        }
 
         return $this;
     }

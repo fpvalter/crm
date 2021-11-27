@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=NotificationRepository::class)
@@ -35,11 +36,13 @@ class Notification
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
 
@@ -47,6 +50,16 @@ class Notification
      * @ORM\Column(type="datetime")
      */
     private $scheduledAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $descricao;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Negocio::class, inversedBy="notifications")
+     */
+    private $negocio;
 
     public function getId(): ?int
     {
@@ -121,6 +134,30 @@ class Notification
     public function setScheduledAt(\DateTimeInterface $scheduledAt): self
     {
         $this->scheduledAt = $scheduledAt;
+
+        return $this;
+    }
+
+    public function getDescricao(): ?string
+    {
+        return $this->descricao;
+    }
+
+    public function setDescricao(?string $descricao): self
+    {
+        $this->descricao = $descricao;
+
+        return $this;
+    }
+
+    public function getNegocio(): ?Negocio
+    {
+        return $this->negocio;
+    }
+
+    public function setNegocio(?Negocio $negocio): self
+    {
+        $this->negocio = $negocio;
 
         return $this;
     }

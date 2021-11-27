@@ -26,7 +26,7 @@
 
 {% block body %}
     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12">
+        <div class="col-lg-9 col-md-9">
             <div class="card client-detail">
                 <div class="body">
                     <h4 class="m-t-0 m-b-0">
@@ -52,6 +52,45 @@
                         <button id="btnPerder" type="button" class="btn btn-danger"><i class="fa fa-thumbs-down"></i> Perder</button>
                         <button id="btnGanhar" type="button" class="btn btn-success m-l-5"><i class="fa fa-thumbs-up"></i> Ganhar</button>
                     {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Agendar notificação</h2>
+                </div>
+                <div class="body">
+                    <form method="post" action="{{ path('notification_new') }}">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input name="data_notification" type="text" class="form-control date" placeholder="Data" required="required">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input name="hora_notification" type="text" class="form-control time24" placeholder="Hora" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea name="descricao_notification" required="required" class="form-control" rows="2" placeholder="Descrição"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">   
+                                <div class="m-t-15 pull-right">
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="negocio_id" value="{{ negocio.id }}" />
+                        <input type="hidden" name="token_notification" value="{{ csrf_token('add_notification') }}" />
+                    </form>
                 </div>
             </div>
         </div>
@@ -121,10 +160,15 @@
     {{ parent() }}
 
     <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-inputmask/jquery.inputmask.bundle.js') }}"></script>
 
     <script>
     
         $(document).ready(function(){
+
+            $('.date').inputmask('dd/mm/yyyy', { placeholder: '__/__/____' });
+            $('.time24').inputmask('hh:mm', { placeholder: '__:__ _m', alias: 'time24', hourFormat: '24' });
 
             getFollowups();
 

@@ -106,7 +106,7 @@ class NegocioRepository extends ServiceEntityRepository
 
             switch($o['column']) {
                 case 0:
-                    $order_by = 'c.id';
+                    $order_by = 'n.id';
                     break;
                 case 1:
                     $order_by = 'n.titulo';

@@ -1,0 +1,10 @@
+<div class="row clearfix mb-4">
+    <div class="col-lg-3 col-sm-12">
+        <select class="form-control redraw-data-table" id="filtro_user" name="filtro_user">
+            <option value="">Qualquer usuario</option>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.email }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

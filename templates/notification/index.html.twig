@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notificações{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-datatable/responsive/responsive.bootstrap4.min.css') }}">
+
+{% endblock %}
+
+{% block body_header %}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Notificações</h2>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('crm_index') }}"><i class="icon-home"></i></a></li>                            
+                <li class="breadcrumb-item">Movimentações</li>
+                <li class="breadcrumb-item active">Notificações</li>
+            </ul>
+        </div> 
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    
+                    {{ render(controller(
+                        'App\\Controller\\NotificationController::__advancedFilter'
+                    )) }}
+
+                    <div class="table-responsive">
+                        <table id="table_notifications" class="table table-hover dataTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Criado</th>
+                                    <th>Agendado</th>
+                                    <th>Usuario</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Criado</th>
+                                    <th>Agendado</th>
+                                    <th>Usuario</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-datatable/responsive/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jquery-datatable/responsive/responsive.bootstrap4.min.js') }}"></script>
+    
+
+    <script>
+
+        $(document).ready(function(){
+
+            
+            $("#filtro_user").val({{ app.user.id }})            
+
+            let dataTable = $('#table_notifications').DataTable( {
+                "responsive": true,
+                "language": {
+                    url: '{{ asset('assets/bundles/datatablesportuguese.json') }}'
+                },
+                "deferRender": true,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": '{{ path('notification_list') }}',
+                    "type": 'POST',
+                    "data": (data) => {
+                        data.filtro_user = $("#filtro_user").val();
+                    }
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "descricao" },
+                    { "data": "criado" },
+                    { "data": "agendado" },
+                    { "data": "email" },
+                    {
+                        "data":           'action_column',
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": ''
+                    },
+                ],
+                "order": [[4, 'asc']]
+            } );
+
+            $('.redraw-data-table').change(function(){
+                dataTable.draw();
+            });
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,20 +1,28 @@
-{% extends 'base.html.twig' %}
+<a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+    <i class="icon-bell"></i>
+    {% if notifications|length > 0 %}
+        <span class="notification-dot"></span>
+    {% endif %}
+</a>
+<ul id="notification_list" class="dropdown-menu notifications animated shake">
+    <li class="header"><strong>Você tem {{ notifications|length }} notificações não lidas</strong></li>
 
-{% block title %}Hello NotificationController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/dev/crm/src/Controller/NotificationController.php'|file_link(0) }}">src/Controller/NotificationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/dev/crm/templates/notification/index.html.twig'|file_link(0) }}">templates/notification/index.html.twig</a></code></li>
-    </ul>
-</div>
-{% endblock %}
+    {% for notification in notifications|slice(0,4) %}
+        <li>
+            <a href="javascript:void(0);">
+                <div class="media">
+                    <div class="media-left">
+                        <a class="text-success m-r-5" href="javascript:alert();"><i class="fa fa-check-circle"></i></a>
+                    </div>
+                    <div class="media-body">
+                        <span class="timestamp">Agendado para {{ notification.scheduledAt|date('d/m/Y H:i') }}h</span>
+                        <p class="text">
+                            {{ notification.descricao }}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </li>   
+    {% endfor %}
+    <li class="footer"><a href="{{ path('notification') }}" class="more">Ver todas as notificações</a></li>
+</ul>

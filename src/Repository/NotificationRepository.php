@@ -20,17 +20,111 @@ class NotificationRepository extends ServiceEntityRepository
         parent::__construct($registry, Notification::class);
     }
 
-    public function findByDisplayed(bool $displayed)
+    public function findByUserAndDisplayed(int $userId, bool $displayed)
     {
         return $this->createQueryBuilder('n')
+            ->andWhere('n.userTarget = :user_target')
             ->andWhere('n.scheduledAt <= :scheduled')
             ->andWhere('n.displayed = :displayed')
+            ->setParameter('user_target', $userId)
             ->setParameter('scheduled', (new \DateTime())->modify("+5 minute"))
             ->setParameter('displayed', $displayed)
             ->orderBy('n.scheduledAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function countNotifications()
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->select("count(c.id)")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function listDataTable($start, $length, $order, $search, $action_filter, $advanced_filter)
+    {
+
+        $search['value'] = str_replace("'", "", $search['value']);
+
+        // Main Query
+        $query = $this->createQueryBuilder('n')
+            ->select('n.id', 'n.descricao', 'neg.id as negocio', 'c.razaoSocial', "DATE_FORMAT(n.scheduledAt, '%d/%m/%Y %H:%i') AS agendado", "DATE_FORMAT(n.createdAt, '%d/%m/%Y') AS criado", 'n.displayed', 'u.email')
+            ->leftJoin('n.negocio', 'neg')
+            ->leftJoin('neg.cliente', 'c')
+            ->leftJoin('n.userTarget', 'u')
+            ->setFirstResult($start)
+            ->setMaxResults($length);
+
+        // Count Query
+        $countQuery = $this->createQueryBuilder('n')
+            ->select('COUNT(n)')
+            ->leftJoin('n.userTarget', 'u');
+
+        // Apply Action Filter
+        if ($action_filter != null) {
+            $query->andWhere($action_filter);
+            $countQuery->andWhere($action_filter);
+        }
+
+        if ($advanced_filter['filtro_user'] != '') {
+            $filtro_user = "n.userTarget = " . $advanced_filter['filtro_user'];
+            $query->andWhere($filtro_user);
+            $countQuery->andWhere($filtro_user);
+        }
+
+        if ($search['value'] != '') {
+
+            $filter_search = " OR n.descricao LIKE '%" . $search['value'] . "%'";
+
+            $query->andWhere($filter_search);
+            $countQuery->andWhere($filter_search);
+
+        }
+
+        // Order
+        foreach ($order as $k => $o) {
+
+            switch($o['column']) {
+                case 0:
+                    $order_by = 'n.id';
+                    break;
+                case 1:
+                    $order_by = 'n.descricao';
+                    break;
+                case 2:
+                    $order_by = 'n.createdAt';
+                    break;
+                case 3:
+                    $order_by = 'n.scheduledAt';
+                    break;
+                case 4:
+                    $order_by = 'n.displayed';
+                    break;
+                case 4:
+                    $order_by = 'u.email';
+                    break;
+                default:
+                    $order_by = '';
+            }
+
+            if ($order_by != '') {
+                $query->orderBy($order_by, $o['dir']);
+            }
+
+        }
+        
+        // Execute
+        $results = $query->getQuery()->getArrayResult();
+        $countResult = $countQuery->getQuery()->getSingleScalarResult();
+
+        return array(
+            "results" 		=> $results,
+            "countResult"	=> $countResult
+        );
+
     }
 
     // /**
