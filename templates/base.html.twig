@@ -225,6 +225,11 @@
                                 <ul class="main-menu metismenu">
                                     <li><a href="{{ path('crm_index') }}"><i class="icon-home"></i><span>Home</span></a></li>
                     
+                                    {% if app.user.vendedor %}
+                                        <!-- <li><a href="{{ path('vendedor_panel') }}"><i class="fa fa-bar-chart-o"></i><span>Painel Vendedor</span></a></li>
+                                        -->
+                                    {% endif %}
+
                                     <li>
                                         <a href="#Cadastros" class="has-arrow"><i class="fa fa-database"></i><span>Cadastros</span></a>
                                         <ul>

@@ -19,6 +19,20 @@ class ContatoRepository extends ServiceEntityRepository
         parent::__construct($registry, Contato::class);
     }
 
+    public function countContatosAniversariantesByVendedor(int $vendedorId)
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->select('c')
+            ->join('c.cliente', 'cli')
+            ->where('cli.vendedor = :vendedor_id')
+            ->andWhere('MONTH(c.dataNascimento) = MONTH(CURRENT_DATE())')
+            ->andWhere('DAY(c.dataNascimento) = DAY(CURRENT_DATE())')
+            ->setParameter('vendedor_id', $vendedorId)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function countContatosCliente(int $cliente_id)
     {
         return $this
