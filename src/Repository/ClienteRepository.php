@@ -115,4 +115,16 @@ class ClienteRepository extends ServiceEntityRepository
         );
 
     }
+
+    public function findByCnpj($cliente)
+    {
+        $cnpj = $cliente['cnpj'];
+
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.cnpj = :cnpj')
+            ->setParameter('cnpj', $cnpj)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

@@ -13,10 +13,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Enum\ClienteTipoCompra;
 use App\Enum\TipoPessoa;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @ORM\Entity(repositoryClass=ClienteRepository::class)
- * 
+ * @UniqueEntity(
+ *     fields={"cnpj"},
+ *     repositoryMethod="findByCnpj",
+ *     errorPath="cnpj",
+ *     message="CNPJ já cadastrado"
+ * )
  * @ApiResource(
  *     collectionOperations={"get", "post"},
  *     itemOperations={"get", "put", "patch"},
@@ -50,6 +57,7 @@ class Cliente
     /**
      * @ORM\Column(type="string", length=14, unique=true)
      * @Groups({"clientePost", "clienteGet"})
+     * @NotBlank(message="CNPJ obrigatorio")
      */
     private $cnpj;
 
