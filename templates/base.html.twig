@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="navbar-brand">
-                        <a href="{{ path('crm_index') }}"><img src="{{ asset('images/logo.png') }}" alt="i4bs" class="img-responsive logo"></a>                
+                        <a href="{{ path('crm_index') }}"><img src="{{ asset('images/logo.png') }}" alt="logo" class="img-responsive logo"></a>                
                     </div>
                     
                     <div class="navbar-right">
@@ -226,25 +226,24 @@
                                     <li><a href="{{ path('crm_index') }}"><i class="icon-home"></i><span>Home</span></a></li>
                     
                                     {% if app.user.vendedor %}
-                                        <!-- <li><a href="{{ path('vendedor_panel') }}"><i class="fa fa-bar-chart-o"></i><span>Painel Vendedor</span></a></li>
-                                        -->
+                                        <li><a href="{{ path('vendedor_panel') }}"><i class="fa fa-bar-chart-o"></i><span>Seller Panel</span></a></li>                                        
                                     {% endif %}
 
                                     <li>
-                                        <a href="#Cadastros" class="has-arrow"><i class="fa fa-database"></i><span>Cadastros</span></a>
+                                        <a href="#Cadastros" class="has-arrow"><i class="fa fa-database"></i><span>Records</span></a>
                                         <ul>
-                                            <li><a href="{{ path('cliente') }}">Clientes</a></li>
+                                            <li><a href="{{ path('cliente') }}">Customers</a></li>
                                         </ul>
                                     </li>
-                                    <!--
+                                    
                                     <li>
-                                        <a href="#Movimentacoes" class="has-arrow"><i class="fa fa-exchange"></i><span>Movimentações</span></a>
+                                        <a href="#Movimentacoes" class="has-arrow"><i class="fa fa-exchange"></i><span>Movements</span></a>
                                         <ul>
-                                            <li><a href="{{ path('negocio') }}">Negócios</a></li>
-                                            <li><a href="{{ path('negocio_kanban') }}">Negócios Abertos</a></li>
+                                            <li><a href="{{ path('negocio') }}">Deals</a></li>
+                                            <li><a href="{{ path('negocio_kanban') }}">Opened Deals</a></li>
                                         </ul>
                                     </li>
-                                    -->
+                                    
                                     
                                     {% if is_granted("ROLE_ADMIN") %}
                                         <li><a href="{{ path('admin') }}"><i class="fa fa-cogs"></i><span>Admin</span></a></li>
