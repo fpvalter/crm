@@ -1,3 +1,3 @@
 # crm
 
-A CRM system developed with Symfony 5.3
+A CRM system developed with Symfony 5.4
